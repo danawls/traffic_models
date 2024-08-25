@@ -13,4 +13,4 @@ class Activate(Get_files):
         self.file_path = file_path
 
     def activate_model(self):
-        getting = Get_files(self.file_path)
+        getting = Get_files(self.file_path, self.count)

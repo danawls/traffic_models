@@ -53,8 +53,9 @@ def activate_generator(q_data, path):
     pass
     #구현하기: activation_model을 작동시키는 클래스 생성 코드 작성.
 
+    #제네레이터 생성
     generator = supervise.Activate(q_data, path, file_paths)
-
+    #모델 시작
     generator.activate_model()
 
 
