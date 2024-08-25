@@ -19,7 +19,8 @@ class Activate(Get_files, Save_file, Data_filter, Combine_data):
     def activate_model(self):
         getting = Get_files(self.file_path, self.count_data)
         saved_by_getting = getting.get_file()
-        for i in saved_by_getting:
-            print(saved_by_getting[i])
+        filtering = Data_filter(saved_by_getting)
+        Combine_data(filtering)
+
 
 

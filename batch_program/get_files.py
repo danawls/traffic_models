@@ -25,9 +25,9 @@ class Get_files:
         # 파일 합쳐서 전체 데이터 만들기
         for i in range(4):
             this_month = 1 + 3 * i
-            saved_files[f'{this_month}월'] = got_c_files[i]
-            saved_files[f'{this_month}월'] = got_e_files[i]
-            saved_files[f'{this_month}월'] = got_w_files[i]
+            saved_files[f'{this_month}월'].append(got_c_files[i])
+            saved_files[f'{this_month}월'].append(got_e_files[i])
+            saved_files[f'{this_month}월'].append(got_w_files[i])
 
         saved_files['도로'] = ddf.read_csv(self.path['도로'])
         saved_files['다발지역'] = ddf.read_csv(self.path['다발지역'])
@@ -97,11 +97,3 @@ class Get_files:
             files.append(df)
 
         return files
-
-
-
-
-
-
-
-
