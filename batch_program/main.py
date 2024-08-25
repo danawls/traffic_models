@@ -2,6 +2,18 @@ from activation_model import save_file
 from activation_model import get_files
 from activation_model import data_filter
 from activation_model import combine_data
+from activation_model import supervise
+
+
+file_paths = {'소통':'/Volumes/Expansion/traffic-prediction/data/its-소통',
+              '돌발':'/Volumes/Expansion/traffic-prediction/data/its-돌발',
+              '기상':'/Volumes/Expansion/traffic-prediction/data/기상청-방재',
+              '도로':'/Volumes/Expansion/traffic-prediction/data/도로 데이터',
+              '다발지역':'/Volumes/Expansion/traffic-prediction/data/전국교통사고다발지역표준데이터',
+              '카메라':'/Volumes/Expansion/traffic-prediction/data/전국무인교통단속카메라표준데이터',
+              '노드링크':'/Volumes/Expansion/traffic-prediction/data/표준노드링크/data',
+              '인구':'/Volumes/Expansion/traffic-prediction/data/행정안전부_지역별(행정동) 성별 연령별 주민등록 인구수',
+              '혼잡빈도':'/Volumes/Expansion/traffic-prediction/data/혼잡빈도'}
 
 def greeting():
     print('안녕하세요! 교통류 이론과 GRU를 결합한 교통에측모델 개발에 관한 연구에 필요한 데이터 생성기 프로그램을 시작합니다!\n이 프로그램은 연구 진행자인 최우진에 의해 개발되었으며,'
@@ -40,7 +52,10 @@ def get_argument():
 def activate_generator(q_data, path):
     pass
     #구현하기: activation_model을 작동시키는 클래스 생성 코드 작성.
-    #첫번째로는 get_files를 실행
+
+    generator = supervise.Activate(q_data, path, file_paths)
+
+    generator.activate_model()
 
 
 
