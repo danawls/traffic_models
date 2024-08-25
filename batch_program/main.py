@@ -1,18 +1,14 @@
-from activation_model import save_file
-from activation_model import get_files
-from activation_model import data_filter
-from activation_model import combine_data
-from activation_model import supervise
+from batch_program.supervise import Activate
 
 
 file_paths = {'소통':'/Volumes/Expansion/traffic-prediction/data/its-소통',
               '돌발':'/Volumes/Expansion/traffic-prediction/data/its-돌발',
               '기상':'/Volumes/Expansion/traffic-prediction/data/기상청-방재',
-              '도로':'/Volumes/Expansion/traffic-prediction/data/도로 데이터',
-              '다발지역':'/Volumes/Expansion/traffic-prediction/data/전국교통사고다발지역표준데이터',
-              '카메라':'/Volumes/Expansion/traffic-prediction/data/전국무인교통단속카메라표준데이터',
+              '도로':'/Volumes/Expansion/traffic-prediction/data/도로 데이터/road(info)_m1.csv',
+              '다발지역':'/Volumes/Expansion/traffic-prediction/data/전국교통사고다발지역표준데이터/전국교통사고다발지역표준데이터.csv',
+              '카메라':'/Volumes/Expansion/traffic-prediction/data/전국무인교통단속카메라표준데이터/전국무인교통단속카메라표준데이터_m1.csv',
               '노드링크':'/Volumes/Expansion/traffic-prediction/data/표준노드링크/data',
-              '인구':'/Volumes/Expansion/traffic-prediction/data/행정안전부_지역별(행정동) 성별 연령별 주민등록 인구수',
+              '인구':'/Volumes/Expansion/traffic-prediction/data/행정안전부_지역별(행정동) 성별 연령별 주민등록 인구수/행정안전부_지역별(행정동) 성별 연령별 주민등록 인구수_20240731.csv',
               '혼잡빈도':'/Volumes/Expansion/traffic-prediction/data/혼잡빈도'}
 
 def greeting():
@@ -54,7 +50,7 @@ def activate_generator(q_data, path):
     #구현하기: activation_model을 작동시키는 클래스 생성 코드 작성.
 
     #제네레이터 생성
-    generator = supervise.Activate(q_data, path, file_paths)
+    generator = Activate(int(q_data), path, file_paths)
     #모델 시작
     generator.activate_model()
 
