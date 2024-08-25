@@ -19,6 +19,7 @@ class Activate(Get_files, Save_file, Data_filter, Combine_data):
     def activate_model(self):
         getting = Get_files(self.file_path, self.count_data)
         saved_by_getting = getting.get_file()
-        print(saved_by_getting)
+        for i in saved_by_getting:
+            print(saved_by_getting[i])
 
 
