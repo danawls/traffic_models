@@ -262,13 +262,21 @@ class Data_filter():
 
     def controller(self):
         #데이터 수정 진행
+        print('다발지역 설정 시작')
         self.area_edit()
+        print('링크 설정 시작')
         self.link_edit()
+        print('노드 설정 시작')
         self.node_edit()
+        print('카메라 설정 시작')
         self.cam_edit()
+        print('혼잡빈도 설정 시작')
         self.confusion_edit()
+        print('돌발 데이터 설정 시작')
         self.its_e_edit()
+        print('기상 데이터 설정 시작')
         self.weather_edit()
+        print('인구 데이터 설정 시작')
         self.people_edit()
         # 임시로
         return self.origin_data
@@ -276,9 +284,10 @@ class Data_filter():
     def its_e_edit(self):
         for i in range(4):
             tm = 1 + 3 * i
-            # e_data = self.origin_data[f'{tm}월'][1]
-            # for v in range(self.count):
-            #     e_data[v] = e_data[v].drop(['관리기관', 'X', 'Y', '돌발종료일시'], axis=1)
+            e_data = self.origin_data[f'{tm}월'][1]
+            for v in range(self.count):
+                e_data[v] = e_data[v].drop(['관리기관', 'X', 'Y', '돌발종료일시'], axis=1)
+                print(e_data[v])
 
 
     def weather_edit(self):

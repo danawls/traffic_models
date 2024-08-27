@@ -55,6 +55,7 @@ def activate_generator(q_data, path, link_id):
     #제네레이터 생성
     generator = Activate(int(q_data), path, file_paths,link_id)
     #모델 시작
+    print('생성 시작했습니다.')
     generator.activate_model()
 
 

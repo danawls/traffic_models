@@ -58,12 +58,16 @@ class Combine_data():
         self.link = link
 
     def combine(self):
+        print('소통 데이터 편집 시작')
         self.edit_c_data()
+        print('돌발 데이터 편집 시작')
         self.edit_e_data()
+        print('링크 데이터 편집 시작')
         self.edit_link()
+        print('노드 데이터 편집 시작')
         self.edit_node()
 
-
+        print('데이터 병합 함수 가동')
         self.combine_all_stuff()
 
         return self.origin_data
@@ -93,11 +97,14 @@ class Combine_data():
             tm = 1 + 3 * i
             e_files = self.origin_data[f'{tm}월'][1]
             for v in range(self.count):
-                e_data = e_files[v].compute()
+                e_data = e_files[v]
 
                 e_data = e_data.rename(columns={'링크아이디':'LINK_ID'})
                 e_data = e_data.astype({'LINK_ID':'str'})
 
+                # 돌발일시 키워드가 없다고 뜸 ㅅㅂ 이걸 어케 고쳐
+                # 2024-08-28 이게 해결되네
+                print(e_data)
                 e_data['date'] = pd.to_datetime(e_data['돌발일시'].apply(self.remove_s))
                 e_data = e_data[pd.Index([e_data.columns[-1]]).append(e_data.columns[:-1])]
 
@@ -136,12 +143,15 @@ class Combine_data():
                 each_combine = c_data
 
                 #c + e
+                print('소통, 돌발 병합')
                 each_combine = pd.merge(c_data, e_data, on=['date', 'LINK_ID'], how='left')
 
                 # + link
+                print('링크 병합')
                 each_combine = pd.merge(each_combine, link_file, on='LINK_ID', how='left')
 
                 # + node
+                print('노드 병합')
                 each_combine = pd.merge(each_combine, node_file, on='NODE_ID', how='left')
 
 
