@@ -52,7 +52,7 @@ class Get_files:
                 day = random.randrange(1, day_by_month[f'{this_month}월'])
                 globals()[f'c_{this_month}'].append(day)
                 random_path = self.path['소통'] + f'/{this_month}/its_c_{this_month}_{day}_m1.csv'
-                globals()[f'df_{this_month}'] = ddf.read_csv(random_path)
+                globals()[f'df_{this_month}'] = ddf.read_csv(random_path, dtype={'링크ID':'object'})
 
                 globals()[f'list_{this_month}'].append(globals()[f'df_{this_month}'])
 

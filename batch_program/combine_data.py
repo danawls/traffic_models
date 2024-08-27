@@ -13,15 +13,18 @@ import pandas as pd
 # 8. 결합 날씨 데이터와 결합
 # 9. 혼잡빈도 데이터 결합
 # 10. 그외 잡 변수 결합
+# 11. 링크 별로 그룹화, 중복 제거 후 배치로 내보내기
+
+#f node로
 
 class Combine_data():
     #컨스트럭터 전까진 도구들
 
-    def get_big_date(v):
+    def get_big_date(self, v):
         a = str(v)
         return a[:4] + '-' + a[4:6] + '-' + a[6:8]
 
-    def get_time(v):
+    def get_time(self, v):
         a = str(v).rjust(4, '0')
         return a[:2] + ':' + a[2:]
 
@@ -29,7 +32,7 @@ class Combine_data():
         a = str(v)
         return a[:-2] + '00'
 
-    def custom_round(a):
+    def custom_round(self, a):
         s = str(a)
         number = int(s[14:16])
 
@@ -49,22 +52,40 @@ class Combine_data():
 
 
 
-    def __init__(self, data, count):
+    def __init__(self, data, count, link):
         self.origin_data = data
         self.count = count
+        self.link = link
 
-    def create_date_at_communication(self):
+    def combine(self):
+        self.edit_c_data()
+        self.edit_e_data()
+        self.edit_link()
+        self.edit_node()
+
+
+        self.combine_all_stuff()
+
+        return self.origin_data
+
+    def edit_c_data(self):
         for i in range(4):
             tm = 1 + 3 * i
             c_files = self.origin_data[f'{tm}월'][0]
             for v in range(self.count):
+                c_origin_data = c_files[v].compute()
+                c_data = c_origin_data[c_origin_data['링크ID'] == self.link]
+                del c_origin_data
+
                 # 컬럼 이름 변경
-                c_files[v] = c_files[v].rename(columns={'링크ID':'LINK_ID'})
-                c_files[v] = c_files[v].astype({'LINK_ID':'str'})
+                c_data = c_data.rename(columns={'링크ID':'LINK_ID'})
+                c_data = c_data.astype({'LINK_ID':'str'})
 
                 #date컬럼 생성
-                c_files[v]['date'] = pd.to_datetime(c_files[v]['생성일'].apply(self.get_big_date) + ' ' + c_files[v]['생성시분'].apply(self.get_time))
-                c_files[v] = c_files[v][pd.Index([c_files[v].columns[-1]]).append(c_files[v].columns[:-1])]
+                c_data['date'] = pd.to_datetime(c_data['생성일'].apply(self.get_big_date) + ' ' + c_data['생성시분'].apply(self.get_time))
+                c_data = c_data[pd.Index([c_data.columns[-1]]).append(c_data.columns[:-1])]
+
+                c_files[v] = c_data
             self.origin_data[f'{tm}월'][0] = c_files
 
     def edit_e_data(self):
@@ -72,28 +93,55 @@ class Combine_data():
             tm = 1 + 3 * i
             e_files = self.origin_data[f'{tm}월'][1]
             for v in range(self.count):
-                e_files[v] = e_files[v].rename(columns={'링크아이디':'LINK_ID'})
-                e_files[v] = e_files[v].astype({'LINK_ID':'str'})
+                e_data = e_files[v].compute()
 
-                e_files[v]['date'] = pd.to_datetime(e_files[v]['돌발일시'].apply(self.remove_s))
-                e_files[v] = e_files[v][pd.Index([e_files[v].columns[-1]]).append(e_files[v].columns[:-1])]
+                e_data = e_data.rename(columns={'링크아이디':'LINK_ID'})
+                e_data = e_data.astype({'LINK_ID':'str'})
 
-                e_files[v]['date'] = pd.to_datetime(e_files[v]['date'].apply(self.custom_round))
+                e_data['date'] = pd.to_datetime(e_data['돌발일시'].apply(self.remove_s))
+                e_data = e_data[pd.Index([e_data.columns[-1]]).append(e_data.columns[:-1])]
+
+                e_data['date'] = pd.to_datetime(e_data['date'].apply(self.custom_round))
+
+                e_files[v] = e_data
 
             self.origin_data[f'{tm}월'] = e_files
 
+    def edit_link(self):
+        link_file = self.origin_data['링크']
+        link_file = link_file.astype({'LINK_ID':'str', 'F_NODE':'str'})
+        link_file = link_file.rename(columns={'F_NODE':'NODE_ID'})
+        self.origin_data['링크'] = link_file
+
+    def edit_node(self):
+        node_file = self.origin_data['노드']
+        node_file = node_file.astype({'NODE_ID':'str'})
+        self.origin_data['노드'] = node_file
 
     def combine_all_stuff(self):
-        #1. c + e
         combined_data = []
         for i in range(4):
             tm = 1 + 3 * i
 
             c_files = self.origin_data[f'{tm}월'][0]
             e_files = self.origin_data[f'{tm}월'][1]
+            link_file = self.origin_data['링크']
+            node_file = self.origin_data['노드']
 
             for v in range(self.count):
                 e_data = e_files[v]
                 c_data = c_files[v]
 
-                
+                #날 별 결합 데이터(기본값: 소통)
+                each_combine = c_data
+
+                #c + e
+                each_combine = pd.merge(c_data, e_data, on=['date', 'LINK_ID'], how='left')
+
+                # + link
+                each_combine = pd.merge(each_combine, link_file, on='LINK_ID', how='left')
+
+                # + node
+                each_combine = pd.merge(each_combine, node_file, on='NODE_ID', how='left')
+
+
