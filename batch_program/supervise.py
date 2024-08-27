@@ -21,8 +21,7 @@ class Activate(Get_files, Save_file, Data_filter, Combine_data):
         saved_by_getting = getting.get_file()
         filtering = Data_filter(saved_by_getting, self.count_data)
         filtered_data = filtering.controller()
-        print(filtered_data)
-        # combined_data = Combine_data(filtering)
-
+        combined_data = Combine_data(filtered_data, self.count_data)
+        last_step = Save_file(combined_data, self.path)
 
 
