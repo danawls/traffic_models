@@ -44,7 +44,6 @@ def get_argument():
 
     argument.append(s_input)
     argument.append(link_input)
-
     activate_generator(argument[0], argument[1], argument[2])
 
 

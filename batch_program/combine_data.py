@@ -28,7 +28,7 @@ class Combine_data():
         a = str(v).rjust(4, '0')
         return a[:2] + ':' + a[2:]
 
-    def remove_s(v):
+    def remove_s(self, v):
         a = str(v)
         return a[:-2] + '00'
 
@@ -97,14 +97,14 @@ class Combine_data():
             tm = 1 + 3 * i
             e_files = self.origin_data[f'{tm}월'][1]
             for v in range(self.count):
-                e_data = e_files[v]
+                e_data = e_files[v].compute()
 
                 e_data = e_data.rename(columns={'링크아이디':'LINK_ID'})
                 e_data = e_data.astype({'LINK_ID':'str'})
 
                 # 돌발일시 키워드가 없다고 뜸 ㅅㅂ 이걸 어케 고쳐
                 # 2024-08-28 이게 해결되네
-                print(e_data)
+                print(e_data['돌발일시'])
                 e_data['date'] = pd.to_datetime(e_data['돌발일시'].apply(self.remove_s))
                 e_data = e_data[pd.Index([e_data.columns[-1]]).append(e_data.columns[:-1])]
 
@@ -112,16 +112,16 @@ class Combine_data():
 
                 e_files[v] = e_data
 
-            self.origin_data[f'{tm}월'] = e_files
+            self.origin_data[f'{tm}월'][1] = e_files
 
     def edit_link(self):
-        link_file = self.origin_data['링크']
+        link_file = self.origin_data['링크'].compute()
         link_file = link_file.astype({'LINK_ID':'str', 'F_NODE':'str'})
         link_file = link_file.rename(columns={'F_NODE':'NODE_ID'})
         self.origin_data['링크'] = link_file
 
     def edit_node(self):
-        node_file = self.origin_data['노드']
+        node_file = self.origin_data['노드'].compute()
         node_file = node_file.astype({'NODE_ID':'str'})
         self.origin_data['노드'] = node_file
 
