@@ -278,6 +278,8 @@ class Data_filter():
         self.weather_edit()
         print('인구 데이터 설정 시작')
         self.people_edit()
+        print('지점 데이터 설정 시작')
+        self.spot_edit()
         # 임시로
         return self.origin_data
 
@@ -317,7 +319,7 @@ class Data_filter():
 
     def link_edit(self):
         link_data = self.origin_data['링크']
-        link_data = link_data.drop(['ROAD_NAME', 'REST_VEH', 'REST_W', 'REST_H', 'C-ITS', 'UPDATEDATE'], axis=1)
+        link_data = link_data.drop(['ROAD_NAME', 'REST_VEH', 'REST_W', 'REST_H', 'C-ITS', 'UPDATEDATE', 'geometry'], axis=1)
         self.origin_data['링크'] = link_data
 
     def people_edit(self):
@@ -554,3 +556,8 @@ class Data_filter():
             c_data = self.origin_data[f'{tm}월'][3]
             c_data = c_data.drop(['VDS_ID', '기점종점방향구분코드'], axis=1)
             self.origin_data[f'{tm}월'][3] = c_data
+
+    def spot_edit(self):
+        spot_data = self.origin_data['지점']
+        spot_data = spot_data.drop(['지점명'], axis=1)
+        self.origin_data['지점'] = spot_data

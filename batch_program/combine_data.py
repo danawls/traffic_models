@@ -1,6 +1,7 @@
 # 데이터 통합 엔진
 import dask.dataframe as ddf
 import pandas as pd
+import numpy as np
 
 # 데이터 병합 순선
 # 1. 소통 데이터 데이트 컬럼 생성
@@ -51,6 +52,32 @@ class Combine_data():
         return s[:14] + str(result) + s[16:]
 
 
+    def get_distance(self, a, b):
+        #유클라디안 거리 계산기
+        sq = (a['위도'] - b['위도']) ** 2 + (a['경도'] - b['경도']) ** 2
+        return np.sqrt(sq)
+
+    def return_lat(self, a):
+        return round(float(a.split()[2][:-1]), 4)
+
+    def return_long(self, a):
+        return round(float(a.split()[1][1:]), 4)
+
+    def get_spot(self, a, b):
+        b['거리'] = b.apply(self.get_distance, args=(a,), axis=1)
+        m_d = max(b['거리'])
+        return b['지점'][b['거리'] == m_d].iloc[0]
+
+
+
+    def get_nearest_spot(self, to_get_data):
+        spot_list = self.origin_data['지점']
+        to_get_data['위도'] = to_get_data['geometry'].apply(self.return_lat)
+        to_get_data['경도'] = to_get_data['geometry'].apply(self.return_long)
+        to_get_data = to_get_data.drop(['geometry'], axis=1)
+        to_get_data['지점'] = to_get_data.apply(self.get_spot, args=(spot_list, ), axis=1)
+
+        return to_get_data
 
     def __init__(self, data, count, link):
         self.origin_data = data
@@ -66,11 +93,15 @@ class Combine_data():
         self.edit_link()
         print('노드 데이터 편집 시작')
         self.edit_node()
+        print('날씨 데이터 편집 시작')
+        self.edit_weather()
+        print('지점 데이터 편집 시작')
+        self.edit_spot()
 
         print('데이터 병합 함수 가동')
-        self.combine_all_stuff()
+        result_data = self.combine_all_stuff()
 
-        return self.origin_data
+        return result_data
 
     def edit_c_data(self):
         for i in range(4):
@@ -125,8 +156,19 @@ class Combine_data():
         node_file = node_file.astype({'NODE_ID':'str'})
         self.origin_data['노드'] = node_file
 
+    def edit_weather(self):
+        for i in range(4):
+            tm = 1 + 3 * i
+            weather_data = self.origin_data[f'{tm}월'][2].compute()
+            self.origin_data[f'{tm}월'][2] = weather_data
+
+    def edit_spot(self):
+        spot_data = self.origin_data['지점'].compute()
+        self.origin_data['지점'] = spot_data
+
+
     def combine_all_stuff(self):
-        combined_data = []
+        combined_data = {'1월':[], '4월':[], '7월':[], '10월':[]}
         for i in range(4):
             tm = 1 + 3 * i
 
@@ -134,6 +176,11 @@ class Combine_data():
             e_files = self.origin_data[f'{tm}월'][1]
             link_file = self.origin_data['링크']
             node_file = self.origin_data['노드']
+            weather_file = self.origin_data[f'{tm}월'][2]
+            spot_file = self.origin_data['지점']
+
+            #날씨 + 지점 결합
+            weather_spot = pd.merge(weather_file, spot_file, on='지점', how='inner')
 
             for v in range(self.count):
                 e_data = e_files[v]
@@ -154,4 +201,13 @@ class Combine_data():
                 print('노드 병합')
                 each_combine = pd.merge(each_combine, node_file, on='NODE_ID', how='left')
 
+                # + weather_spot
+                # 첫번째로 가장 가까운 거리의 지점 컬럼 만들기
+                each_combine = self.get_nearest_spot(each_combine)
+                each_combine = pd.merge(each_combine, weather_spot, on='지점', how='left')
+
+                combined_data[f'{tm}월'].append(each_combine)
+                del each_combine
+
+            return combined_data
 

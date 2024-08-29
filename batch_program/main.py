@@ -9,7 +9,8 @@ file_paths = {'소통':'/Volumes/Expansion/traffic-prediction/data/its-소ᄐ
               '카메라':'/Volumes/Expansion/traffic-prediction/data/전국무인교통단속카메라표준데이터/전국무인교통단속카메라표준데이터_m1.csv',
               '노드링크':'/Volumes/Expansion/traffic-prediction/data/표준노드링크/data',
               '인구':'/Volumes/Expansion/traffic-prediction/data/행정안전부_지역별(행정동) 성별 연령별 주민등록 인구수/행정안전부_지역별(행정동) 성별 연령별 주민등록 인구수_20240731.csv',
-              '혼잡빈도':'/Volumes/Expansion/traffic-prediction/data/혼잡빈도'}
+              '혼잡빈도':'/Volumes/Expansion/traffic-prediction/data/혼잡빈도',
+              '지점':'/Volumes/Expansion/traffic-prediction/data/other/META_관측지점정보_20240825213356.csv'}
 
 def greeting():
     print('안녕하세요! 교통류 이론과 GRU를 결합한 교통예측모델 개발에 관한 연구에 필요한 데이터 생성기 프로그램을 시작합니다!\n이 프로그램은 연구 진행자인 최우진에 의해 개발되었으며,'

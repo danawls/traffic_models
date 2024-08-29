@@ -43,6 +43,7 @@ class Get_files:
         saved_files['노드'] = ddf.read_csv(self.path['노드링크'] + '/node_m1.csv')
         saved_files['링크'] = ddf.read_csv(self.path['노드링크'] + '/link_m1.csv')
         saved_files['인구'] = ddf.read_csv(self.path['인구'])
+        saved_files['지점'] = ddf.read_csv(self.path['지점'])
 
         return saved_files
 
