@@ -64,7 +64,7 @@ class Combine_data():
         return round(float(a.split()[1][1:]), 4)
 
     def get_spot(self, a, b):
-        b['거리'] = b.apply(self.get_distance, args=(a,), axis=1)
+        b['거리'] = b.apply(lambda row: self.get_distance(row, a), axis=1, meta=('거리', 'float64'))
         m_d = max(b['거리'])
         return b['지점'][b['거리'] == m_d].iloc[0]
 
@@ -72,10 +72,10 @@ class Combine_data():
 
     def get_nearest_spot(self, to_get_data):
         spot_list = self.origin_data['지점']
-        to_get_data['위도'] = to_get_data['geometry'].apply(self.return_lat)
-        to_get_data['경도'] = to_get_data['geometry'].apply(self.return_long)
+        to_get_data['위도'] = to_get_data['geometry'].apply(self.return_lat, meta=('geometry', 'str'))
+        to_get_data['경도'] = to_get_data['geometry'].apply(self.return_long, meta=('geometry', 'str'))
         to_get_data = to_get_data.drop(['geometry'], axis=1)
-        to_get_data['지점'] = to_get_data.apply(self.get_spot, args=(spot_list, ), axis=1)
+        to_get_data['지점'] = to_get_data.apply(lambda row: self.get_spot(row, spot_list), axis=1, meta=('지점', 'int64'))
 
         return to_get_data
 
@@ -131,10 +131,10 @@ class Combine_data():
             # 돌발일시 키워드가 없다고 뜸 ㅅㅂ 이걸 어케 고쳐
             # 2024-08-28 이게 해결되네
             print(e_data['돌발일시'])
-            e_data['date'] = ddf.to_datetime(e_data['돌발일시'].apply(self.remove_s))
-            e_data = e_data[ddf.Index([e_data.columns[-1]]).append(e_data.columns[:-1])]
+            e_data['date'] = pd.to_datetime(e_data['돌발일시'].apply(self.remove_s))
+            e_data = e_data[pd.Index([e_data.columns[-1]]).append(e_data.columns[:-1])]
 
-            e_data['date'] = ddf.to_datetime(e_data['date'].apply(self.custom_round))
+            e_data['date'] = pd.to_datetime(e_data['date'].apply(self.custom_round))
 
             self.origin_data[f'{self.tm}월'][1][self.count] = e_data
 
