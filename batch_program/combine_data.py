@@ -1,6 +1,6 @@
 # 데이터 통합 엔진
 import dask.dataframe as ddf
-import pandas as pd
+import pandas as ddf
 import numpy as np
 
 # 데이터 병합 순선
@@ -106,17 +106,20 @@ class Combine_data():
     def edit_c_data(self):
         c_files = self.origin_data[f'{self.tm}월'][0][self.count]
         c_data = c_files.compute()
-        print('소통데이터 불러오기 완료')
+        print('소통데이터 불러오기 완료, 데이터 타입 변환')
 
         # 컬럼 이름 변경
         c_data = c_data.rename(columns={'링크ID':'LINK_ID'})
         c_data = c_data.astype({'LINK_ID':'str'})
+        print('소통 데이터 타입 변환 완료, 데이트 컬럼 생성 시작')
 
         #date컬럼 생성
-        c_data['date'] = pd.to_datetime(c_data['생성일'].apply(self.get_big_date) + ' ' + c_data['생성시분'].apply(self.get_time))
-        c_data = c_data[pd.Index([c_data.columns[-1]]).append(c_data.columns[:-1])]
+        c_data['date'] = ddf.to_datetime(c_data['생성일'].apply(self.get_big_date) + ' ' + c_data['생성시분'].apply(self.get_time))
+        c_data = c_data[ddf.Index([c_data.columns[-1]]).append(c_data.columns[:-1])]
+        print('소통 데이터 편집 완료')
 
         self.origin_data[f'{self.tm}월'][0][self.count] = c_data
+        del c_data
 
     def edit_e_data(self):
             e_files = self.origin_data[f'{self.tm}월'][1][self.count]
@@ -128,10 +131,10 @@ class Combine_data():
             # 돌발일시 키워드가 없다고 뜸 ㅅㅂ 이걸 어케 고쳐
             # 2024-08-28 이게 해결되네
             print(e_data['돌발일시'])
-            e_data['date'] = pd.to_datetime(e_data['돌발일시'].apply(self.remove_s))
-            e_data = e_data[pd.Index([e_data.columns[-1]]).append(e_data.columns[:-1])]
+            e_data['date'] = ddf.to_datetime(e_data['돌발일시'].apply(self.remove_s))
+            e_data = e_data[ddf.Index([e_data.columns[-1]]).append(e_data.columns[:-1])]
 
-            e_data['date'] = pd.to_datetime(e_data['date'].apply(self.custom_round))
+            e_data['date'] = ddf.to_datetime(e_data['date'].apply(self.custom_round))
 
             self.origin_data[f'{self.tm}월'][1][self.count] = e_data
 
@@ -147,8 +150,8 @@ class Combine_data():
         self.origin_data['노드'] = node_file
 
     def edit_weather(self):
-        weather_data = self.origin_data[f'{self.tm}월'][2][self.count].compute()
-        self.origin_data[f'{self.tm}월'][2][self.count] = weather_data
+        weather_data = self.origin_data[f'{self.tm}월'][2].compute()
+        self.origin_data[f'{self.tm}월'][2] = weather_data
 
 
     def edit_spot(self):
@@ -161,28 +164,37 @@ class Combine_data():
             e_data = self.origin_data[f'{self.tm}월'][1][self.count]
             link_file = self.origin_data['링크']
             node_file = self.origin_data['노드']
-            weather_file = self.origin_data[f'{self.tm}월'][2][self.count]
+            weather_file = self.origin_data[f'{self.tm}월'][2]
             spot_file = self.origin_data['지점']
 
             #날씨 + 지점 결합
-            weather_spot = pd.merge(weather_file, spot_file, on='지점', how='inner')
+            weather_spot = ddf.merge(weather_file, spot_file, on='지점', how='inner')
+            del weather_file, spot_file
 
             #c + e
             print('소통, 돌발 병합')
-            each_combine = pd.merge(c_data, e_data, on=['date', 'LINK_ID'], how='left')
+            each_combine = ddf.merge(c_data, e_data, on=['date', 'LINK_ID'], how='left')
+
+            del c_data, e_data
 
             # + link
             print('링크 병합')
-            each_combine = pd.merge(each_combine, link_file, on='LINK_ID', how='left')
+            each_combine = ddf.merge(each_combine, link_file, on='LINK_ID', how='inner')
+
+            del link_file
 
             # + node
             print('노드 병합')
-            each_combine = pd.merge(each_combine, node_file, on='NODE_ID', how='left')
+            each_combine = ddf.merge(each_combine, node_file, on='NODE_ID', how='inner')
+
+            del node_file
 
             # + weather_spot
             # # 첫번째로 가장 가까운 거리의 지점 컬럼 만들기
             each_combine = self.get_nearest_spot(each_combine)
-            each_combine = pd.merge(each_combine, weather_spot, on='지점', how='left')
+            each_combine = ddf.merge(each_combine, weather_spot, on='지점', how='inner')
+
+            del weather_spot
 
             return each_combine
 
