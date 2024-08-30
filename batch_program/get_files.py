@@ -78,7 +78,7 @@ class Get_files:
 
             for i_low in self.c_days[i]:
                 path = self.path['돌발'] + f'/{this_month}/its_e_{this_month}_{i_low}_m1.csv'
-                df = ddf.read_csv(path, dtype={'링크아이디':'object', '도로번호':'object'})
+                df = ddf.read_csv(path, dtype='object')
                 list.append(df)
 
             files.append(list)

@@ -41,19 +41,16 @@ def get_argument():
 
     s_input = input('데이터를 저장할 경로를 입력하시오')
 
-    link_input = input('사용하고 싶은 링크 아이디를 입력하시오')
-
     argument.append(s_input)
-    argument.append(link_input)
-    activate_generator(argument[0], argument[1], argument[2])
+    activate_generator(argument[0], argument[1])
 
 
-def activate_generator(q_data, path, link_id):
+def activate_generator(q_data, path):
     pass
     #구현하기: activation_model을 작동시키는 클래스 생성 코드 작성.
 
     #제네레이터 생성
-    generator = Activate(int(q_data), path, file_paths,link_id)
+    generator = Activate(int(q_data), path, file_paths)
     #모델 시작
     print('생성 시작했습니다.')
     generator.activate_model()

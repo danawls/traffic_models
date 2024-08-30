@@ -79,10 +79,10 @@ class Combine_data():
 
         return to_get_data
 
-    def __init__(self, data, count, link):
+    def __init__(self, data, tm, count):
         self.origin_data = data
         self.count = count
-        self.link = link
+        self.tm = tm
 
     def combine(self):
         print('소통 데이터 편집 시작')
@@ -104,46 +104,36 @@ class Combine_data():
         return result_data
 
     def edit_c_data(self):
-        for i in range(4):
-            tm = 1 + 3 * i
-            c_files = self.origin_data[f'{tm}월'][0]
-            for v in range(self.count):
-                c_origin_data = c_files[v].compute()
-                c_data = c_origin_data[c_origin_data['링크ID'] == self.link]
-                del c_origin_data
+        c_files = self.origin_data[f'{self.tm}월'][0][self.count]
+        c_data = c_files.compute()
+        print('소통데이터 불러오기 완료')
 
-                # 컬럼 이름 변경
-                c_data = c_data.rename(columns={'링크ID':'LINK_ID'})
-                c_data = c_data.astype({'LINK_ID':'str'})
+        # 컬럼 이름 변경
+        c_data = c_data.rename(columns={'링크ID':'LINK_ID'})
+        c_data = c_data.astype({'LINK_ID':'str'})
 
-                #date컬럼 생성
-                c_data['date'] = pd.to_datetime(c_data['생성일'].apply(self.get_big_date) + ' ' + c_data['생성시분'].apply(self.get_time))
-                c_data = c_data[pd.Index([c_data.columns[-1]]).append(c_data.columns[:-1])]
+        #date컬럼 생성
+        c_data['date'] = pd.to_datetime(c_data['생성일'].apply(self.get_big_date) + ' ' + c_data['생성시분'].apply(self.get_time))
+        c_data = c_data[pd.Index([c_data.columns[-1]]).append(c_data.columns[:-1])]
 
-                c_files[v] = c_data
-            self.origin_data[f'{tm}월'][0] = c_files
+        self.origin_data[f'{self.tm}월'][0][self.count] = c_data
 
     def edit_e_data(self):
-        for i in range(4):
-            tm = 1 + 3 * i
-            e_files = self.origin_data[f'{tm}월'][1]
-            for v in range(self.count):
-                e_data = e_files[v].compute()
+            e_files = self.origin_data[f'{self.tm}월'][1][self.count]
+            e_data = e_files.compute()
 
-                e_data = e_data.rename(columns={'링크아이디':'LINK_ID'})
-                e_data = e_data.astype({'LINK_ID':'str'})
+            e_data = e_data.rename(columns={'링크아이디':'LINK_ID'})
+            e_data = e_data.astype({'LINK_ID':'str'})
 
-                # 돌발일시 키워드가 없다고 뜸 ㅅㅂ 이걸 어케 고쳐
-                # 2024-08-28 이게 해결되네
-                print(e_data['돌발일시'])
-                e_data['date'] = pd.to_datetime(e_data['돌발일시'].apply(self.remove_s))
-                e_data = e_data[pd.Index([e_data.columns[-1]]).append(e_data.columns[:-1])]
+            # 돌발일시 키워드가 없다고 뜸 ㅅㅂ 이걸 어케 고쳐
+            # 2024-08-28 이게 해결되네
+            print(e_data['돌발일시'])
+            e_data['date'] = pd.to_datetime(e_data['돌발일시'].apply(self.remove_s))
+            e_data = e_data[pd.Index([e_data.columns[-1]]).append(e_data.columns[:-1])]
 
-                e_data['date'] = pd.to_datetime(e_data['date'].apply(self.custom_round))
+            e_data['date'] = pd.to_datetime(e_data['date'].apply(self.custom_round))
 
-                e_files[v] = e_data
-
-            self.origin_data[f'{tm}월'][1] = e_files
+            self.origin_data[f'{self.tm}월'][1][self.count] = e_data
 
     def edit_link(self):
         link_file = self.origin_data['링크'].compute()
@@ -157,10 +147,9 @@ class Combine_data():
         self.origin_data['노드'] = node_file
 
     def edit_weather(self):
-        for i in range(4):
-            tm = 1 + 3 * i
-            weather_data = self.origin_data[f'{tm}월'][2].compute()
-            self.origin_data[f'{tm}월'][2] = weather_data
+        weather_data = self.origin_data[f'{self.tm}월'][2][self.count].compute()
+        self.origin_data[f'{self.tm}월'][2][self.count] = weather_data
+
 
     def edit_spot(self):
         spot_data = self.origin_data['지점'].compute()
@@ -168,46 +157,32 @@ class Combine_data():
 
 
     def combine_all_stuff(self):
-        combined_data = {'1월':[], '4월':[], '7월':[], '10월':[]}
-        for i in range(4):
-            tm = 1 + 3 * i
-
-            c_files = self.origin_data[f'{tm}월'][0]
-            e_files = self.origin_data[f'{tm}월'][1]
+            c_data = self.origin_data[f'{self.tm}월'][0][self.count]
+            e_data = self.origin_data[f'{self.tm}월'][1][self.count]
             link_file = self.origin_data['링크']
             node_file = self.origin_data['노드']
-            weather_file = self.origin_data[f'{tm}월'][2]
+            weather_file = self.origin_data[f'{self.tm}월'][2][self.count]
             spot_file = self.origin_data['지점']
 
             #날씨 + 지점 결합
             weather_spot = pd.merge(weather_file, spot_file, on='지점', how='inner')
 
-            for v in range(self.count):
-                e_data = e_files[v]
-                c_data = c_files[v]
+            #c + e
+            print('소통, 돌발 병합')
+            each_combine = pd.merge(c_data, e_data, on=['date', 'LINK_ID'], how='left')
 
-                #날 별 결합 데이터(기본값: 소통)
-                each_combine = c_data
+            # + link
+            print('링크 병합')
+            each_combine = pd.merge(each_combine, link_file, on='LINK_ID', how='left')
 
-                #c + e
-                print('소통, 돌발 병합')
-                each_combine = pd.merge(c_data, e_data, on=['date', 'LINK_ID'], how='left')
+            # + node
+            print('노드 병합')
+            each_combine = pd.merge(each_combine, node_file, on='NODE_ID', how='left')
 
-                # + link
-                print('링크 병합')
-                each_combine = pd.merge(each_combine, link_file, on='LINK_ID', how='left')
+            # + weather_spot
+            # # 첫번째로 가장 가까운 거리의 지점 컬럼 만들기
+            each_combine = self.get_nearest_spot(each_combine)
+            each_combine = pd.merge(each_combine, weather_spot, on='지점', how='left')
 
-                # + node
-                print('노드 병합')
-                each_combine = pd.merge(each_combine, node_file, on='NODE_ID', how='left')
-
-                # + weather_spot
-                # 첫번째로 가장 가까운 거리의 지점 컬럼 만들기
-                each_combine = self.get_nearest_spot(each_combine)
-                each_combine = pd.merge(each_combine, weather_spot, on='지점', how='left')
-
-                combined_data[f'{tm}월'].append(each_combine)
-                del each_combine
-
-            return combined_data
+            return each_combine
 

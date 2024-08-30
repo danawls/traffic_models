@@ -256,9 +256,10 @@ columns_each = {'소통':['생성일', '생성시분', '링크ID', '통행속도
                         '평균속도', '혼잡빈도수', '차로번호', '콘존명', '콘존길이']}
 
 class Data_filter():
-    def __init__(self, origin_data, count):
+    def __init__(self, origin_data, tm, count):
         self.origin_data = origin_data
         self.count = count
+        self.tm = tm
 
     def controller(self):
         #데이터 수정 진행
@@ -284,20 +285,16 @@ class Data_filter():
         return self.origin_data
 
     def its_e_edit(self):
-        for i in range(4):
-            tm = 1 + 3 * i
-            e_data = self.origin_data[f'{tm}월'][1]
-            for v in range(self.count):
-                e_data[v] = e_data[v].drop(['관리기관', 'X', 'Y', '돌발종료일시'], axis=1)
-                print(e_data[v])
+            e_data = self.origin_data[f'{self.tm}월'][1][self.count]
+            e_data = e_data.drop(['관리기관', 'X', 'Y', '돌발종료일시'], axis=1)
+            print(e_data)
+            self.origin_data[f'{self.tm}월'][1][self.count] = e_data
 
 
     def weather_edit(self):
-        for i in range(4):
-            tm = 1 + 3 * i
-            w_data = self.origin_data[f'{tm}월'][2]
-            w_data = w_data.drop(['지점명'], axis=1)
-            self.origin_data[f'{tm}월'][2] = w_data
+        w_data = self.origin_data[f'{self.tm}월'][2]
+        w_data = w_data.drop(['지점명'], axis=1)
+        self.origin_data[f'{self.tm}월'][2] = w_data
 
 
     def area_edit(self):
@@ -551,11 +548,9 @@ class Data_filter():
         self.origin_data['인구'] = people_data
 
     def confusion_edit(self):
-        for i in range(4):
-            tm = 1 + 3 * i
-            c_data = self.origin_data[f'{tm}월'][3]
+            c_data = self.origin_data[f'{self.tm}월'][3]
             c_data = c_data.drop(['VDS_ID', '기점종점방향구분코드'], axis=1)
-            self.origin_data[f'{tm}월'][3] = c_data
+            self.origin_data[f'{self.tm}월'][3] = c_data
 
     def spot_edit(self):
         spot_data = self.origin_data['지점']
