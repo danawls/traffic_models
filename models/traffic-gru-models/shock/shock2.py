@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import tensorflow as tf
-from tensorflow.keras import Model
+from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Dense, GRU, Concatenate
 
 # 1. 데이터 준비 및 전처리

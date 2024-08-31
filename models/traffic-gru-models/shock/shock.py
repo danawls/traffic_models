@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras import Model
+from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Dense, GRU, Concatenate
 
 # 1. 데이터 준비

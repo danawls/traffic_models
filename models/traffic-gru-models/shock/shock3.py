@@ -3,21 +3,22 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import tensorflow as tf
-from tensorflow.keras import Model
+from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Dense, GRU, Concatenate
+import matplotlib.pyplot as plt
 
 K = 1.5
 
 # 1. 데이터 준비 및 전처리
 # 데이터 로드
-data = pd.read_csv('BPCL.csv')
+data = pd.read_csv('/Volumes/Expansion/traffic-prediction/product-data/32.csv')
 
 # 예를 들어 'Volume' 열이 교통량 데이터라고 가정
 # 이동 평균 계산 (예: 5일 이동 평균)
-data['Moving_Avg'] = data['Volume'].rolling(window=5).mean()
+data['Moving_Avg'] = data['통행속도'].rolling(window=5).mean()
 
 # 이동 평균과의 차이를 계산하여 충격파 강도 정의
-data['Volume_Change'] = data['Volume'] - data['Moving_Avg']
+data['Volume_Change'] = data['통행속도'] - data['Moving_Avg']
 
 # 표준편차를 이용한 임계값 설정 (예: 이동 평균 변화의 1.5배 표준편차를 충격파로 간주)
 threshold = data['Volume_Change'].std() * K
@@ -28,7 +29,7 @@ data = data.dropna()
 
 # 데이터 정규화 (Min-Max Scaler)
 scaler = MinMaxScaler()
-data_scaled = scaler.fit_transform(data[['Volume']])
+data_scaled = scaler.fit_transform(data[['통행속도']])
 shock_intensity = data['Shock_Intensity'].values  # 충격파 강도 배열로 변환
 
 # 시계열 데이터 생성
@@ -71,7 +72,7 @@ model = Model(inputs=[input_gru, shock_intensity_input], outputs=gru_output)
 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001), loss='mean_squared_error')
 
 # 3. 모델 학습
-history = model.fit([X_train, shock_train], y_train, epochs=50, batch_size=32, validation_split=0.2)
+history = model.fit([X_train, shock_train], y_train, epochs=500, batch_size=32, validation_split=0.2)
 
 # 4. 모델 평가
 # 학습 데이터 예측
@@ -92,3 +93,4 @@ test_r2 = r2_score(y_test, y_test_pred)
 
 print(f"Train MSE: {train_mse}, Train RMSE: {train_rmse}, Train MAE: {train_mae}, Train R2: {train_r2}")
 print(f"Test MSE: {test_mse}, Test RMSE: {test_rmse}, Test MAE: {test_mae}, Test R2: {test_r2}")
+
