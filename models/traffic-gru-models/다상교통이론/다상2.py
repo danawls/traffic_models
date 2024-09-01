@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 # 데이터 로드 및 전처리
-file_path = '/Volumes/Expansion/traffic-prediction/product-data/1/32.csv'
+file_path = '/Volumes/Expansion/traffic-prediction/product-data/con/6000VDS02200.csv'
 data = pd.read_csv(file_path)
 
 # 'date' 컬럼을 datetime 형식으로 변환
@@ -20,7 +20,7 @@ data = data.sort_index()
 # data['flow'] = data['density'] * data['통행속도']  # q_t = k_t * v_t
 
 # 상태 변수 S 생성 (임의로 정의, 실제 데이터에 따라 수정 필요)
-data['state'] = pd.cut(data['통행속도'], bins=[-np.inf, 45, 70, np.inf], labels=[0, 1, 2])  # 예시로 세 가지 상태로 나눔
+data['state'] = pd.cut(data['speed(u)'], bins=[-np.inf, 45, 70, np.inf], labels=[0, 1, 2])  # 예시로 세 가지 상태로 나눔
 # print(data['state'])
 
 # # '통행속도' 정규화
@@ -35,8 +35,8 @@ def create_sequences(data, seq_length=10):
     sequences = []
     targets = []
     for i in range(len(data) - seq_length):
-        seq = data.iloc[i:i + seq_length][['통행속도', 'state']].values
-        target = data.iloc[i + seq_length]['통행속도']
+        seq = data.iloc[i:i + seq_length][['speed(u)', 'confusion', 'lane_number', 'state']].values
+        target = data.iloc[i + seq_length]['traffic(Q)']
         sequences.append(seq)
         targets.append(target)
     return np.array(sequences), np.array(targets)

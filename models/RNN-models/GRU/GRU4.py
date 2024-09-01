@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 # 데이터 로드 및 전처리
-file_path = '/Volumes/Expansion/traffic-prediction/product-data/1/32.csv'
+file_path = '/Volumes/Expansion/traffic-prediction/product-data/con/6000VDS02200.csv'
 data = pd.read_csv(file_path)
 
 # 'date' 컬럼을 datetime 형식으로 변환
@@ -39,8 +39,8 @@ def create_sequences(data, seq_length=10):
     sequences = []
     targets = []
     for i in range(len(data) - seq_length):
-        seq = data.iloc[i:i + seq_length][['통행속도']].values
-        target = data.iloc[i + seq_length]['통행속도']
+        seq = data.iloc[i:i + seq_length][['speed(u)', 'confusion', 'lane_number']].values
+        target = data.iloc[i + seq_length]['traffic(Q)']
         sequences.append(seq)
         targets.append(target)
     return np.array(sequences), np.array(targets)

@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 # 데이터 로드 및 전처리
-file_path = '/Volumes/Expansion/traffic-prediction/product-data/1/32.csv'
+file_path = '/Volumes/Expansion/traffic-prediction/product-data/con/6000VDS02200.csv'
 data = pd.read_csv(file_path)
 
 # 'date' 컬럼을 datetime 형식으로 변환
@@ -20,7 +20,7 @@ data = data.sort_index()
 # data['flow'] = data['density'] * data['통행속도']  # q_t = k_t * v_t
 
 # 입력 데이터 변화량 계산
-data['delta_x'] = data['통행속도'].diff()
+data['delta_x'] = data['speed(u)'].diff()
 
 # 뉴웰의 관성 모델을 위한 반응 시간 설정
 K = 3  # 예시로 3타임 스텝 뒤에 반응한다고 가정
@@ -34,8 +34,8 @@ def create_sequences(data, seq_length=10):
     sequences = []
     targets = []
     for i in range(len(data) - seq_length):
-        seq = data.iloc[i:i + seq_length][['통행속도', 'delta_x_shifted']].values
-        target = data.iloc[i + seq_length]['통행속도']
+        seq = data.iloc[i:i + seq_length][['speed(u)', 'confusion', 'lane_number', 'delta_x_shifted']].values
+        target = data.iloc[i + seq_length]['traffic(Q)']
         sequences.append(seq)
         targets.append(target)
     return np.array(sequences), np.array(targets)
@@ -109,7 +109,7 @@ def train_step(sequences, targets):
 
 
 # 학습 루프
-EPOCHS = 50  # 학습 에폭
+EPOCHS = 500  # 학습 에폭
 for epoch in range(EPOCHS):
     total_loss = 0
     for sequences, targets in train_dataset:
@@ -142,8 +142,8 @@ predictions, actuals = evaluate_model(newell_gru_model, test_dataset)
 
 # 예측 시각화
 plt.figure(figsize=(12, 6))
-plt.plot(actuals, label='Actual', color='b', linewidth=0.5)
-plt.plot(predictions, label='Predicted', color='r', linewidth=0.5)
+plt.plot(actuals, label='Actual', color='b')
+plt.plot(predictions, label='Predicted', color='r')
 plt.title('Actual vs Predicted (Newell GRU)')
 plt.xlabel('Sample')
 plt.ylabel('Normalized Speed')

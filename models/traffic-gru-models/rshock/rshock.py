@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 # 데이터 로드 및 전처리
-file_path = 'mnt/data/1.csv'
+file_path = '/Volumes/Expansion/traffic-prediction/product-data/con/6000VDS02200.csv'
 data = pd.read_csv(file_path)
 
 # 'date' 컬럼을 datetime 형식으로 변환
@@ -16,17 +16,17 @@ data = data.set_index('date')
 data = data.sort_index()
 
 # 교통 밀도, 속도, 흐름 계산
-data['density'] = data['통행속도']  # 예시로 속도를 밀도로 사용
-data['flow'] = data['density'] * data['통행속도']  # q_t = k_t * v_t
+data['density'] = data['traffic(Q)']  # 예시로 속도를 밀도로 사용
+data['flow'] = data['density'] * data['speed(u)']  # q_t = k_t * v_t
 
 # 충격파 강도 (예시로 랜덤하게 생성)
 np.random.seed(42)
 data['shock_intensity'] = np.random.uniform(0, 1, len(data))
-
-# '통행속도' 정규화
-scaler = StandardScaler()
-data[['density', '통행속도', 'flow', 'shock_intensity']] = scaler.fit_transform(
-    data[['density', '통행속도', 'flow', 'shock_intensity']])
+#
+# # '통행속도' 정규화
+# scaler = StandardScaler()
+# data[['density', 'speed(u)', 'flow', 'shock_intensity']] = scaler.fit_transform(
+#     data[['density', 'speed(u)', 'flow', 'shock_intensity']])
 
 
 # 시퀀스 생성 함수
@@ -34,8 +34,8 @@ def create_sequences(data, seq_length=10):
     sequences = []
     targets = []
     for i in range(len(data) - seq_length):
-        seq = data.iloc[i:i + seq_length][['density', '통행속도', 'flow', 'shock_intensity']].values
-        target = data.iloc[i + seq_length]['통행속도']
+        seq = data.iloc[i:i + seq_length][['speed(u)', 'confusion', 'lane_number']].values
+        target = data.iloc[i + seq_length]['traffic(Q)']
         sequences.append(seq)
         targets.append(target)
     return np.array(sequences), np.array(targets)
@@ -115,13 +115,13 @@ optimizer = tf.keras.optimizers.Adam()
 def train_step(sequences, targets):
     with tf.GradientTape() as tape:
         # 충격파 강도 예측
-        shock_input = sequences[:, :, :-1]  # 'shock_intensity'를 제외한 입력
+        shock_input = sequences[:, :, :]  # 'shock_intensity'를 제외한 입력
         shock_input_reshaped = tf.reshape(shock_input, (-1, shock_input.shape[2]))
         shock_intensity_pred = shockwave_model(shock_input_reshaped)
         shock_intensity_pred = tf.reshape(shock_intensity_pred, (shock_input.shape[0], shock_input.shape[1]))
 
         # 모델 실행
-        predictions = gru_model(sequences[:, :, :-1], shock_intensity_pred)
+        predictions = gru_model(sequences[:, :, :], shock_intensity_pred)
 
         # 손실 계산
         loss = loss_object(targets, predictions)
@@ -145,11 +145,11 @@ def evaluate_model(gru_model, shockwave_model, test_dataset):
     predictions = []
     actuals = []
     for sequences, targets in test_dataset:
-        shock_input = sequences[:, :, :-1]
+        shock_input = sequences[:, :, :]
         shock_input_reshaped = tf.reshape(shock_input, (-1, shock_input.shape[2]))
         shock_intensity_pred = shockwave_model(shock_input_reshaped)
         shock_intensity_pred = tf.reshape(shock_intensity_pred, (shock_input.shape[0], shock_input.shape[1]))
-        preds = gru_model(sequences[:, :, :-1], shock_intensity_pred)
+        preds = gru_model(sequences[:, :, :], shock_intensity_pred)
         predictions.extend(preds.numpy().flatten())
         actuals.extend(targets.numpy())
 

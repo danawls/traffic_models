@@ -37,7 +37,7 @@ def create_gru_model(input_shape):
 
 # 모델 학습 및 파인 튜닝 함수
 def train_and_fine_tune_model(data, model=None, pickle_path='lwr_gru_model.pkl'):
-    x_t = data[['density', '통행속도', 'flow']].values  # 기존 입력 데이터
+    x_t = data[['density', 'speed(u)', 'flow']].values  # 기존 입력 데이터
 
     # LWR 모델 예측 값 계산
     density_lwr, velocity_lwr, flow_lwr = lwr_predictions(data['density'].values)
@@ -67,7 +67,7 @@ def train_and_fine_tune_model(data, model=None, pickle_path='lwr_gru_model.pkl')
 
 # 예측 및 성능 지표 출력 함수
 def evaluate_model(model, data):
-    x_t = data[['density', '통행속도', 'flow']].values  # 기존 입력 데이터
+    x_t = data[['density', 'speed(u)', 'flow']].values  # 기존 입력 데이터
 
     # LWR 모델 예측 값 계산
     density_lwr, velocity_lwr, flow_lwr = lwr_predictions(data['density'].values)
@@ -107,7 +107,7 @@ def evaluate_model(model, data):
 
 def main():
     # 파일 리스트 생성
-    file_paths = sorted(glob.glob('/Volumes/Expansion/traffic-prediction/product-data/1/32.csv'))
+    file_paths = sorted(glob.glob('/Volumes/Expansion/traffic-prediction/product-data/con/6000VDS02200.csv'))
 
 
     # 첫 모델 학습
@@ -115,9 +115,9 @@ def main():
     for file_path in file_paths:
         data = load_and_preprocess_data(file_path)
         # 교통 밀도, 속도, 흐름 계산
-        data['density'] = data['통행속도']  # 예시로 속도를 밀도로 사용
-        data['flow'] = data['density'] * data['통행속도']  # q_t = k_t * v_t
-        data['target'] = data['통행속도'].shift(-1)
+        data['density'] = data['traffic(Q)']  # 예시로 속도를 밀도로 사용
+        data['flow'] = data['density'] * data['speed(u)']  # q_t = k_t * v_t
+        data['target'] = data['speed(u)'].shift(-1)
         data.dropna(inplace=True)
         if model is None:
             model, history = train_and_fine_tune_model(data, model=None, pickle_path='lwr_gru_model.pkl')

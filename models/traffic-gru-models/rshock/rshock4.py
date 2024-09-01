@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 # 데이터 로드 및 전처리
-file_path = '/Volumes/Expansion/traffic-prediction/product-data/1/32.csv'
+file_path = '/Volumes/Expansion/traffic-prediction/product-data/con/6000VDS02200.csv'
 data = pd.read_csv(file_path)
 
 # 'date' 컬럼을 datetime 형식으로 변환
@@ -20,11 +20,11 @@ data = data.sort_index()
 # data['flow'] = data['density'] * data['통행속도']  # q_t = k_t * v_t
 
 # 이동 평균 계산
-window_size = 10  # 이동 평균을 계산할 윈도우 크기
-data['moving_avg_flow'] = data['통행속도'].rolling(window=window_size).mean()
+window_size = 18  # 이동 평균을 계산할 윈도우 크기
+data['moving_avg_flow'] = data['speed(u)'].rolling(window=window_size).mean()
 
 # 교통량 변화율 계산
-data['delta_flow'] = data['통행속도'] - data['moving_avg_flow']
+data['delta_flow'] = data['speed(u)'] - data['moving_avg_flow']
 
 # 표준편차를 이용한 임계값 설정
 k = 1  # 임계값 조정을 위한 상수
@@ -44,8 +44,8 @@ def create_sequences(data, seq_length=10):
     sequences = []
     targets = []
     for i in range(len(data) - seq_length):
-        seq = data.iloc[i:i + seq_length][['통행속도', 'shock_intensity']].values
-        target = data.iloc[i + seq_length]['통행속도']
+        seq = data.iloc[i:i + seq_length][['speed(u)', 'confusion', 'lane_number', 'shock_intensity']].values
+        target = data.iloc[i + seq_length]['traffic(Q)']
         sequences.append(seq)
         targets.append(target)
     return np.array(sequences), np.array(targets)
@@ -119,7 +119,7 @@ def train_step(sequences, targets):
 
 
 # 학습 루프
-EPOCHS = 100  # 학습 에폭
+EPOCHS = 500  # 학습 에폭
 for epoch in range(EPOCHS):
     total_loss = 0
     for sequences, targets in train_dataset:
