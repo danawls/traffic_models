@@ -17,10 +17,6 @@ def preprocess_data(file_path):
     data = data.set_index('date')
     data = data.sort_index()
 
-    # 이상치 제거 및 필요한 컬럼만 유지
-    data = data[(data['traffic(Q)'] > 0) & (data['traffic(Q)'] < data['traffic(Q)'].quantile(0.99))]
-    data = data[(data['speed(u)'] > 0) & (data['speed(u)'] < data['speed(u)'].quantile(0.99))]
-
     return data
 
 
