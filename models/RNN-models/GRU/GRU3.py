@@ -19,7 +19,7 @@ def create_sequences(data, seq_length):
     return np.array(x), np.array(y)
 
 # CSV 파일들을 로드하고 순차적으로 모델 학습 및 파인튜닝
-file_list = sorted(glob.glob('/Volumes/Expansion/traffic-prediction/product-data/32.csv'))  # '1.csv', '2.csv', '3.csv' 등
+file_list = sorted(glob.glob('/Volumes/Expansion/traffic-prediction/product-data/1/32.csv'))  # '1.csv', '2.csv', '3.csv' 등
 seq_length = 10
 
 # 모델 초기화 변수
@@ -72,7 +72,7 @@ for i, file_path in enumerate(file_list):
             model, scaler = pickle.load(f)
 
     # 3. 모델 학습 또는 파인튜닝
-    model.fit(X_train, y_train, epochs=500, batch_size=32, validation_split=0.2)
+    model.fit(X_train, y_train, epochs=100, batch_size=32, validation_split=0.2)
 
     # 4. 모델 평가
     y_train_pred = model.predict(X_train)

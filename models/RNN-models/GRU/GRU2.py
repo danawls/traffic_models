@@ -8,7 +8,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import matplotlib.pyplot as plt
 
 # Load the dataset
-data = pd.read_csv('1.csv')
+data = pd.read_csv('/Volumes/Expansion/traffic-prediction/product-data/1/32.csv')
 
 # Preprocess the data
 data['date'] = pd.to_datetime(data['date'])
@@ -38,8 +38,7 @@ X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))
 
 # Build the GRU model
 model = Sequential()
-model.add(GRU(units=50, return_sequences=True, input_shape=(look_back, 1)))
-model.add(GRU(units=50, return_sequences=False))
+model.add(GRU(units=64, return_sequences=True, input_shape=(look_back, 1)))
 model.add(Dense(units=1))
 
 # Compile and train the model

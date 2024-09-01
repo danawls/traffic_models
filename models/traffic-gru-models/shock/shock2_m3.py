@@ -67,7 +67,7 @@ def create_sequences(data, shock_data, seq_length):
     return np.array(x), np.array(y), np.array(shock)
 
 # CSV 파일들을 로드하고 순차적으로 모델 학습 및 파인튜닝
-file_list = sorted(glob.glob('/Volumes/Expansion/traffic-prediction/product-data/32.csv'))  # '1.csv', '2.csv', '3.csv' 등
+file_list = sorted(glob.glob('/Volumes/Expansion/traffic-prediction/product-data/1/32.csv'))  # '1.csv', '2.csv', '3.csv' 등
 # file_list = sorted(glob.glob('archive/*.csv'))  # '1.csv', '2.csv', '3.csv' 등
 seq_length = 10
 
