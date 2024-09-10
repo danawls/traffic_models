@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, mean_absolute_percentage_error
 
 # 데이터 로드 및 전처리
-file_path = '/Volumes/Expansion/traffic-prediction/product-data/con/6000VDS02200.csv'
+file_path = '/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/con/0010VDE03400.csv'
 data = pd.read_csv(file_path)
 
 # 'date' 컬럼을 datetime 형식으로 변환
@@ -39,7 +39,7 @@ def create_sequences(data, seq_length=10):
     sequences = []
     targets = []
     for i in range(len(data) - seq_length):
-        seq = data.iloc[i:i + seq_length][['speed(u)', 'confusion', 'lane_number' , 'shock_intensity']].values
+        seq = data.iloc[i:i + seq_length][['speed(u)', 'confusion', 'lane_number', 'shock_intensity']].values
         target = data.iloc[i + seq_length]['traffic(Q)']
         sequences.append(seq)
         targets.append(target)
@@ -69,7 +69,7 @@ class OptimizedGRUModel(tf.keras.Model):
         self.dropout = tf.keras.layers.Dropout(dropout_rate)
         self.batch_norm = tf.keras.layers.BatchNormalization()
         self.dense2 = tf.keras.layers.Dense(1)
-        self.W_shock = tf.Variable(tf.random.normal([1]), trainable=True)
+        self.W_shock = tf.Variable(tf.random.normal([1, hidden_size]), trainable=True)
 
     def call(self, inputs):
         x, shock_intensity = inputs[:, :, :-1], inputs[:, :, -1]

@@ -41,7 +41,7 @@ model.add(SimpleRNN(50))
 model.add(Dense(1))
 model.compile(optimizer=Adam(learning_rate=0.001), loss='mean_squared_error')
 
-history = model.fit(X_train, Y_train, epochs=50, batch_size=32, validation_data=(X_test, Y_test), verbose=1)
+history = model.fit(X_train, Y_train, epochs=100, batch_size=32, validation_data=(X_test, Y_test), verbose=1)
 
 # Make Predictions
 train_predict = model.predict(X_train)
@@ -76,4 +76,5 @@ plt.title('Model Loss')
 plt.xlabel('Epochs')
 plt.ylabel('Loss')
 plt.legend()
+plt.savefig('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/table-figure/figure/gru_compare/rnn.png', dpi=500)
 plt.show()
