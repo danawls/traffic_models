@@ -9,7 +9,7 @@ from torch_geometric.nn import GCNConv
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, mean_absolute_percentage_error
 import os
 import matplotlib.pyplot as plt
 
@@ -19,14 +19,16 @@ def preprocess_data(file_path):
     data = pd.read_csv(file_path)
     data['date'] = pd.to_datetime(data['date'])
     data = data.sort_values(by='date')
-    data.fillna(method='ffill', inplace=True)
 
     # 필요한 피처 선택 및 정규화
     features = ['traffic(Q)', 'speed(u)', 'confusion', 'lane_number']
-    scaler = StandardScaler()
-    data[features] = scaler.fit_transform(data[features])
+    x_f = ['speed(u)', 'confusion', 'lane_number']
+    scaler_x = StandardScaler()
+    scaler_y = StandardScaler()
+    data[x_f] = scaler_x.fit_transform(data[x_f])
+    data['traffic(Q)'] = scaler_y.fit_transform(data[['traffic(Q)']])
 
-    return data, scaler
+    return data, scaler_x, scaler_y
 
 
 # 그래프 데이터 생성 함수
@@ -54,9 +56,9 @@ class GNNModel(torch.nn.Module):
 
 
 # 모델 학습 함수
-def train_gnn_model(data_list, epochs=100, batch_size=32):
+def train_gnn_model(data_list, epochs=500, batch_size=64):
     model = GNNModel(input_dim=3, hidden_dim=16, output_dim=1)
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
     loader = DataLoader(data_list, batch_size=batch_size, shuffle=True)
     model.train()
@@ -89,11 +91,16 @@ def evaluate_model(model, data_list):
     y_true = np.concatenate(y_true)
     y_pred = np.concatenate(y_pred)
 
+    y_true = scaler_y.inverse_transform(y_true.reshape(-1, 1)).flatten()
+    y_pred = scaler_y.inverse_transform(y_pred.reshape(-1, 1)).flatten()
+
     mse = mean_squared_error(y_true, y_pred)
     mae = mean_absolute_error(y_true, y_pred)
+    rmse = np.sqrt(mse)
     r2 = r2_score(y_true, y_pred)
+    mape = mean_absolute_percentage_error(y_true, y_pred)
 
-    print(f'MSE: {mse:.4f}, MAE: {mae:.4f}, R2: {r2:.4f}')
+    print(f'MSE: {mse}, MAE: {mae}, R2: {r2}, mse:{rmse}, mape:{mape}')
 
     return y_true, y_pred
 
@@ -111,11 +118,11 @@ def plot_results(y_true, y_pred):
 
 
 # 데이터 로드 및 전처리
-data_files = ['/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/con/6000VDS02200.csv']
+data_files = [f'/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/10/6000VDS03500.csv']
 data_list = []
 
 for file in data_files:
-    data, scaler = preprocess_data(file)
+    data, scaler_x, scaler_y = preprocess_data(file)
     graph_data = create_graph_data(data)
     data_list.append(graph_data)
 
@@ -125,3 +132,6 @@ model = train_gnn_model(data_list)
 # 모델 평가 및 결과 시각화
 y_true, y_pred = evaluate_model(model, data_list)
 plot_results(y_true, y_pred)
+
+# df = pd.DataFrame({'value': list(y_pred), 'real': y_true})
+# df.to_csv('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/table-figure/table/graph-compare/gnn.csv', index=False)

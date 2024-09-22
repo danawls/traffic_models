@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, mean_absolute_percentage_error
 import matplotlib.pyplot as plt
 from scipy.sparse import diags, eye
 from scipy.sparse.linalg import inv
@@ -33,7 +33,8 @@ def evaluate_performance(actual, predicted):
     mse = mean_squared_error(actual, predicted)
     mae = mean_absolute_error(actual, predicted)
     r2 = r2_score(actual, predicted)
-    print(f'MSE: {mse:.4f}, MAE: {mae:.4f}, R2 Score: {r2:.4f}')
+    mape = mean_absolute_percentage_error(actual, predicted)
+    print(f'MSE: {mse}, MAE: {mae}, R2 Score: {r2}, mape: {mape}')
 
     # 시각화
     plt.figure(figsize=(10, 5))
@@ -48,7 +49,7 @@ def evaluate_performance(actual, predicted):
 # 메인 코드 실행
 if __name__ == "__main__":
     # 데이터 파일 경로 설정
-    file_path = '/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/con/6000VDS02200.csv'  # 여기에 사용자의 데이터 파일 경로를 입력하세요
+    file_path = f'/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/10/6000VDS03500.csv' # 여기에 사용자의 데이터 파일 경로를 입력하세요
     data = preprocess_data(file_path)
 
     # 모델 학습 및 예측
@@ -56,3 +57,6 @@ if __name__ == "__main__":
 
     # 성능 평가
     evaluate_performance(y_actual, y_pred)
+
+    # df = pd.DataFrame({'value': list(y_pred), 'real': y_actual})
+    # df.to_csv('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/table-figure/table/graph-compare/gmrfs.csv', index=False)

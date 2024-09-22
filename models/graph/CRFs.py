@@ -6,7 +6,7 @@ from sklearn_crfsuite.metrics import flat_classification_report
 from sklearn.model_selection import train_test_split
 
 # 데이터 불러오기
-data = pd.read_csv('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/con/6000VDS02200.csv')
+data = pd.read_csv('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/1/6000VDS02200.csv')
 
 # 시퀀스를 일정한 길이로 나누기 위한 함수
 def create_sequences(data, seq_length):
@@ -33,7 +33,7 @@ def extract_labels(data):
     return data['traffic(Q)'].shift(-1).ffill().astype(int).astype(str).tolist()  # 문자열로 변환
 
 # 시퀀스 길이 설정
-sequence_length = 5  # 적절한 시퀀스 길이로 설정하세요.
+sequence_length = 10  # 적절한 시퀀스 길이로 설정하세요.
 
 # 시퀀스 데이터 생성
 X_seq, y_seq = create_sequences(data, sequence_length)

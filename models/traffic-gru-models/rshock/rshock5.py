@@ -2,14 +2,18 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score, mean_absolute_percentage_error
 import tensorflow as tf
 from tensorflow.keras.layers import Input, GRU, Dense
 from tensorflow.keras.models import Model
 
-# CSV 파일을 읽어옵니다.
-file_path = '/Volumes/Expansion/traffic-prediction/product-data/con/6000VDS02200.csv'
+PRED_RATIO = 1
+
+# CSV 파일
+file_path = '/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/1/6000VDS03500.csv'
 data = pd.read_csv(file_path)
+
+data = data.iloc[:int((len(data) * PRED_RATIO)) - 1, :]
 
 # 필요한 열 선택
 traffic_data = data['traffic(Q)'].values
@@ -29,7 +33,7 @@ target = 'traffic(Q)'
 
 # 입력 데이터와 타겟 데이터 정규화
 scaler = MinMaxScaler()
-normalized_data = scaler.fit_transform(data[features])
+normalized_data = data[features]
 
 # 시계열 데이터를 위한 입력 및 출력 데이터 생성 함수
 def create_sequences(data, target, seq_length):
@@ -46,7 +50,7 @@ def create_sequences(data, target, seq_length):
 sequence_length = 10
 
 # 타겟 데이터 정규화 (출력만 정규화된 데이터로 예측해야 함)
-target_data = scaler.fit_transform(data[[target]])
+target_data = data[target]
 
 # 시퀀스 데이터 생성
 X, y = create_sequences(normalized_data, target_data, sequence_length)
@@ -55,7 +59,7 @@ X, y = create_sequences(normalized_data, target_data, sequence_length)
 X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.2, random_state=42)
 X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)
 
-# TensorFlow에서 사용자 정의 GRU 층을 구현하기 위해 사용자 정의 층을 만듭니다.
+# TensorFlow에서 사용자 정의 GRU 층을 구현하기 위해 사용자 정의 층을 만들었다 이말이야.
 class ShockwaveGRU(tf.keras.layers.Layer):
     def __init__(self, units, **kwargs):
         super(ShockwaveGRU, self).__init__(**kwargs)
@@ -64,16 +68,14 @@ class ShockwaveGRU(tf.keras.layers.Layer):
 
     def build(self, input_shape):
         # W_shock은 스칼라 형태의 가중치로 초기화
-        self.W_shock = self.add_weight(shape=(1, 1),  # 스칼라 값으로 변경
+        self.W_shock = self.add_weight(shape=(1, 1),
                                        initializer='random_normal',
                                        trainable=True, name='W_shock')
         super(ShockwaveGRU, self).build(input_shape)
 
     def call(self, inputs, states):
-        shock_intensity = inputs[..., -1:]  # 마지막 입력이 shock wave intensity라고 가정
-        # 스칼라 곱셈으로 shock_contribution 계산
+        shock_intensity = inputs[..., -1:]
         shock_contribution = shock_intensity * self.W_shock
-        # 기존 입력과 shock_contribution을 결합하여 modulated_input을 만듭니다.
         modulated_input = tf.concat([inputs[..., :-1], shock_contribution], axis=-1)
         output, state = self.gru(modulated_input, initial_state=states)
         return output, state
@@ -94,7 +96,7 @@ model = Model(inputs=input_layer, outputs=output_layer)
 model.compile(optimizer='adam', loss='mse')
 
 # 모델 학습
-history = model.fit(X_train, y_train, epochs=100, batch_size=32, validation_data=(X_val, y_val))
+history = model.fit(X_train, y_train, epochs=5, batch_size=32, validation_data=(X_val, y_val))
 
 # 모델 평가
 test_loss = model.evaluate(X_test, y_test)
@@ -103,17 +105,19 @@ print(f'Test Loss (MSE): {test_loss}')
 # 예측
 y_pred = model.predict(X_test)
 
-y_pred_original = scaler.inverse_transform(y_pred)
-y_test_original = scaler.inverse_transform(y_test)
+y_pred_original = y_pred
+y_test_original = data['traffic(Q)']
 
-# 성능 지표 계산
-mae = mean_absolute_error(y_test_original, y_pred_original )
-rmse = np.sqrt(mean_squared_error(y_test_original, y_pred_original ))
-r2 = r2_score(y_test_original, y_pred_original )
-
-print(f'Mean Absolute Error (MAE): {mae}')
-print(f'Root Mean Squared Error (RMSE): {rmse}')
-print(f'R-squared (R²): {r2}')
+# # 성능 지표 계산
+# mae = mean_absolute_error(y_test_original, y_pred_original )
+# rmse = np.sqrt(mean_squared_error(y_test_original, y_pred_original ))
+# r2 = r2_score(y_test_original, y_pred_original )
+# mape = mean_absolute_percentage_error(y_test_original, y_pred_original)
+#
+# print(f'Mean Absolute Error (MAE): {mae}')
+# print(f'Root Mean Squared Error (RMSE): {rmse}')
+# print(f'R-squared (R²): {r2}')
+# print(f'mape: {mape}')
 
 # 결과 출력
 import matplotlib.pyplot as plt
@@ -124,3 +128,36 @@ plt.plot(y_pred_original, label='Predicted Value')
 plt.title('Traffic Flow Prediction (traffic(Q))')
 plt.legend()
 plt.show()
+
+print(X_test)
+
+prediction = model.predict(data[features])
+
+y_pred_original = prediction
+y_test_original = data[target]
+
+# 성능 지표 계산
+mae = mean_absolute_error(y_test_original, y_pred_original )
+mse = mean_squared_error(y_test_original, y_pred_original )
+rmse = np.sqrt(mean_squared_error(y_test_original, y_pred_original ))
+r2 = r2_score(y_test_original, y_pred_original )
+mape = mean_absolute_percentage_error(y_test_original, y_pred_original)
+
+print(f'Mean Absolute Error (MAE): {mae}')
+print(f'Mean Squared Error (MAE): {mse}')
+print(f'Root Mean Squared Error (RMSE): {rmse}')
+print(f'R-squared (R²): {r2}')
+print(f'mape: {mape}')
+
+plt.figure(figsize=(12, 6))
+plt.plot(data[target], label='Actual', color='b')
+plt.plot(prediction, label='Predicted', color='r')
+plt.title('Actual vs Predicted (Moving Average GRU)')
+plt.xlabel('Sample')
+plt.ylabel('Speed')
+plt.legend()
+plt.show()
+
+df = pd.DataFrame({'value': list(y_pred_original)})
+df.to_csv('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/table-figure/table/deep-compare/rshock5.csv', index=False)
+

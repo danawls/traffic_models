@@ -75,7 +75,7 @@ def evaluate_performance(y_test, y_pred):
 
 
 # 모든 CSV 파일을 불러오기 위한 경로 설정
-file_paths = glob.glob('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/con/6000VDS02200.csv')
+file_paths = glob.glob('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/1/6000VDS02200.csv')
 
 # 첫 번째 CSV 파일로 모델 학습 및 평가
 if file_paths:  # 파일이 존재하는지 확인

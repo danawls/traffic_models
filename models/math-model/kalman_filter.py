@@ -1,7 +1,9 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, mean_absolute_percentage_error
+
+t = 10
 
 # 칼만 필터 클래스 정의
 class KalmanFilter:
@@ -33,7 +35,7 @@ class KalmanFilter:
         return self.x
 
 # 데이터 불러오기 (사용자 데이터 경로로 변경)
-data = pd.read_csv('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/con/6000VDS02200.csv')
+data = pd.read_csv(f'/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/{t}/6000VDS03500.csv')
 
 # 'traffic(Q)' 열을 시계열 데이터로 사용
 measurements = data['traffic(Q)'].values
@@ -62,11 +64,14 @@ mse = mean_squared_error(measurements, predictions)
 mae = mean_absolute_error(measurements, predictions)
 rmse = np.sqrt(mse)
 r2 = r2_score(measurements, predictions)
+mape = mean_absolute_percentage_error(measurements, predictions)
 
-print(f"Mean Squared Error (MSE): {mse:.4f}")
-print(f"Mean Absolute Error (MAE): {mae:.4f}")
-print(f"Root Mean Squared Error (RMSE): {rmse:.4f}")
-print(f"R^2 Score: {r2:.4f}")
+print(f"Mean Squared Error (MSE): {mse}")
+print(f"Mean Absolute Error (MAE): {mae}")
+print(f"Root Mean Squared Error (RMSE): {rmse}")
+print(f"R^2 Score: {r2}")
+print(f"Mean Absolute Percentage Error (MAPE): {mape}")
+
 
 # 실제 값과 예측 값 시각화
 plt.figure(figsize=(12, 6))
@@ -77,3 +82,6 @@ plt.ylabel('Traffic (Q)')
 plt.title('Traffic Prediction using Kalman Filter')
 plt.legend()
 plt.show()
+
+# df = pd.DataFrame({'value': predictions, 'real': measurements})
+# df.to_csv('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/table-figure/table/math-compare/kalman.csv', index=False)

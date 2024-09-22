@@ -1,10 +1,11 @@
 import pandas as pd
 import numpy as np
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, mean_absolute_percentage_error
 import matplotlib.pyplot as plt
 import glob
 from pmdarima import auto_arima
 
+t = 10
 
 # 데이터 전처리 함수 (변형이나 정규화 없이 그대로 사용)
 def preprocess_data(file_path):
@@ -25,11 +26,11 @@ def train_auto_sarima_model(data):
     y = data['traffic(Q)'].values
 
     # 학습 데이터와 테스트 데이터 분할
-    train_size = int(len(y) * 0.8)
-    train, test = y[:train_size], y[train_size:]
+    train_size = int(len(y) * 0.2)
+    train, test = y[:train_size], y[:]
 
     # Auto ARIMA 모델 학습 (계절성 고려)
-    model = auto_arima(train, seasonal=True, m=12, trace=True, error_action='ignore', suppress_warnings=True)
+    model = auto_arima(train, seasonal=True, m=32, trace=True, error_action='ignore', suppress_warnings=True)
 
     # 테스트 데이터를 사용하여 예측 수행
     predictions = model.predict(n_periods=len(test))
@@ -43,15 +44,18 @@ def evaluate_performance(actual, predicted):
     mae = mean_absolute_error(actual, predicted)
     rmse = np.sqrt(mse)
     r2 = r2_score(actual, predicted)
+    mape = mean_absolute_percentage_error(actual, predicted)
 
-    print(f"Mean Squared Error (MSE): {mse:.4f}")
-    print(f"Mean Absolute Error (MAE): {mae:.4f}")
-    print(f"Root Mean Squared Error (RMSE): {rmse:.4f}")
-    print(f"R^2 Score: {r2:.4f}")
+    print(f"Mean Squared Error (MSE): {mse}")
+    print(f"Mean Absolute Error (MAE): {mae}")
+    print(f"Root Mean Squared Error (RMSE): {rmse}")
+    print(f"R^2 Score: {r2}")
+    print(f"Mean Absolute Percentage Error (MAPE): {mape}")
+
 
 
 # 모든 CSV 파일을 불러오기 위한 경로 설정
-file_paths = glob.glob('/Volumes/Expansion/traffic-prediction/product-data/con/6000VDS02200.csv')
+file_paths = glob.glob(f'/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/{t}/6000VDS03500.csv')
 
 # 첫 번째 CSV 파일로 모델 학습 및 평가
 if file_paths:  # 파일이 존재하는지 확인
@@ -74,5 +78,7 @@ if file_paths:  # 파일이 존재하는지 확인
     plt.legend()
     plt.grid()
     plt.show()
+    # df = pd.DataFrame({'value': y_pred, 'real': y_test})
+    # df.to_csv('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/table-figure/table/clock-compare/sarima.csv', index=False)
 else:
     print("No CSV files found in the specified directory.")

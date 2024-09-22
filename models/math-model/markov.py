@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelEncoder
 
 # 데이터 불러오기 (사용자 데이터 경로로 변경)
-data = pd.read_csv('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/con/6000VDS02200.csv')
+data = pd.read_csv('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/1/6000VDS02200.csv')
 
 # 'traffic(Q)' 열을 시계열 데이터로 사용
 traffic_data = data['traffic(Q)'].values

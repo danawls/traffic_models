@@ -27,7 +27,7 @@ data['moving_avg_flow'] = data['speed(u)'].rolling(window=window_size).mean()
 data['delta_flow'] = data['speed(u)'] - data['moving_avg_flow']
 
 # 표준편차를 이용한 임계값 설정
-k = 1  # 임계값 조정을 위한 상수
+k = 0.7  # 임계값 조정을 위한 상수
 sigma = k * data['delta_flow'].std()
 
 # 충격파 강도 계산
@@ -156,6 +156,6 @@ plt.plot(actuals, label='Actual', color='b')
 plt.plot(predictions, label='Predicted', color='r')
 plt.title('Actual vs Predicted (Moving Average GRU)')
 plt.xlabel('Sample')
-plt.ylabel('Normalized Speed')
+plt.ylabel('Speed')
 plt.legend()
 plt.show()

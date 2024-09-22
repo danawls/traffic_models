@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import BayesianRidge
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, mean_absolute_percentage_error
 import matplotlib.pyplot as plt
 import glob
 
@@ -45,8 +45,8 @@ def train_bayesian_model(data):
     model.fit(X_train, y_train)
 
     # 예측
-    y_pred_scaled = model.predict(X_test)
-    y_test = scaler_y.inverse_transform(y_test.reshape(-1, 1)).flatten()
+    y_pred_scaled = model.predict(X_scaled)
+    y_test = scaler_y.inverse_transform(y_scaled.reshape(-1, 1)).flatten()
     y_pred = scaler_y.inverse_transform(y_pred_scaled.reshape(-1, 1)).flatten()
 
     return y_test, y_pred
@@ -58,15 +58,17 @@ def evaluate_performance(actual, predicted):
     mae = mean_absolute_error(actual, predicted)
     rmse = np.sqrt(mse)
     r2 = r2_score(actual, predicted)
+    mape = mean_absolute_percentage_error(actual, predicted)
 
-    print(f"Mean Squared Error (MSE): {mse:.4f}")
-    print(f"Mean Absolute Error (MAE): {mae:.4f}")
-    print(f"Root Mean Squared Error (RMSE): {rmse:.4f}")
-    print(f"R^2 Score: {r2:.4f}")
+    print(f"Mean Squared Error (MSE): {mse}")
+    print(f"Mean Absolute Error (MAE): {mae}")
+    print(f"Root Mean Squared Error (RMSE): {rmse}")
+    print(f"R^2 Score: {r2}")
+    print(f"Mean Absolute Percentage Error (mape): {mape}")
 
 
 # 모든 CSV 파일을 불러오기 위한 경로 설정
-file_paths = glob.glob('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/con/6000VDS02200.csv')
+file_paths = glob.glob(f'/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/10/6000VDS03500.csv')
 
 # 첫 번째 CSV 파일로 모델 학습 및 평가
 if file_paths:  # 파일이 존재하는지 확인
@@ -82,12 +84,15 @@ if file_paths:  # 파일이 존재하는지 확인
     # 결과 시각화
     plt.figure(figsize=(12, 6))
     plt.plot(y_test, label='Actual Traffic(Q)', color='b')
-    plt.plot(y_pred, label='Predicted Traffic(Q)', color='r', linestyle='--')
+    plt.plot(y_pred, label='Predicted Traffic(Q)', color='r')
     plt.xlabel('Samples')
     plt.ylabel('Traffic(Q)')
     plt.title('Bayesian Regression: Actual vs Predicted Traffic(Q)')
     plt.legend()
     plt.grid()
     plt.show()
+
+    # df = pd.DataFrame({'value': list(y_pred)})
+    # df.to_csv('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/table-figure/table/deep-compare/bayesian.csv', index=False)
 else:
     print("지정된 디렉토리에 CSV 파일이 없습니다.")

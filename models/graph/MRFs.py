@@ -5,7 +5,7 @@ from pgmpy.factors.discrete import DiscreteFactor
 from pgmpy.inference import BeliefPropagation
 
 # 데이터 불러오기
-data = pd.read_csv('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/con/6000VDS02200.csv')
+data = pd.read_csv('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/1/6000VDS02200.csv')
 
 # 필요한 열 선택
 traffic_flow = data['traffic(Q)'].values  # 교통량

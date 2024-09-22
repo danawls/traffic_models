@@ -1,9 +1,10 @@
 import pandas as pd
 from prophet import Prophet
 import matplotlib.pyplot as plt
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, mean_absolute_percentage_error
 import glob
 
+t = 10
 
 # 데이터 전처리 함수
 def preprocess_data(file_path):
@@ -37,15 +38,17 @@ def evaluate_performance(actual, predicted):
     mae = mean_absolute_error(actual, predicted)
     rmse = mean_squared_error(actual, predicted, squared=False)
     r2 = r2_score(actual, predicted)
+    mape = mean_absolute_percentage_error(actual, predicted)
 
-    print(f"Mean Squared Error (MSE): {mse:.4f}")
-    print(f"Mean Absolute Error (MAE): {mae:.4f}")
-    print(f"Root Mean Squared Error (RMSE): {rmse:.4f}")
-    print(f"R^2 Score: {r2:.4f}")
+    print(f"Mean Squared Error (MSE): {mse}")
+    print(f"Mean Absolute Error (MAE): {mae}")
+    print(f"Root Mean Squared Error (RMSE): {rmse}")
+    print(f"R^2 Score: {r2}")
+    print(f"Mean Absolute Percentage Error (MAPE): {mape}")
 
 
 # 모든 CSV 파일을 불러오기 위한 경로 설정
-file_paths = glob.glob('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/con/6000VDS02200.csv')
+file_paths = glob.glob(f'/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/{t}/6000VDS03500.csv')
 
 # 첫 번째 CSV 파일로 모델 학습 및 평가
 if file_paths:  # 파일이 존재하는지 확인
@@ -65,12 +68,15 @@ if file_paths:  # 파일이 존재하는지 확인
     # 결과 시각화
     plt.figure(figsize=(12, 6))
     plt.plot(data['ds'], actual, label='Actual Traffic(Q)', color='b')
-    plt.plot(forecast['ds'], predicted, label='Predicted Traffic(Q)', color='r', linestyle='--')
+    plt.plot(forecast['ds'], predicted, label='Predicted Traffic(Q)', color='r')
     plt.xlabel('Date')
     plt.ylabel('Traffic(Q)')
     plt.title('Prophet: Actual vs Predicted Traffic(Q)')
     plt.legend()
     plt.grid()
     plt.show()
+
+    # df = pd.DataFrame({'value': predicted, 'real': actual})
+    # df.to_csv('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/table-figure/table/clock-compare/prohet.csv', index=False)
 else:
     print("지정된 디렉토리에 CSV 파일이 없습니다.")

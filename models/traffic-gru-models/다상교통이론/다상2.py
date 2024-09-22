@@ -4,10 +4,19 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, mean_absolute_percentage_error
+
+PRED_RATIO = 0.2
+mon = 10
+
+HIDDEN_SIZE = 64
+LEARNING_RATE = 0.001
+DROPOUT = 0.2
+BATCH_SIZE = 32
+EPOCH = 500
 
 # 데이터 로드 및 전처리
-file_path = '/Volumes/Expansion/traffic-prediction/product-data/con/6000VDS02200.csv'
+file_path = f'/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/{mon}/6000VDS03500.csv'
 data = pd.read_csv(file_path)
 
 # 'date' 컬럼을 datetime 형식으로 변환
@@ -20,7 +29,7 @@ data = data.sort_index()
 # data['flow'] = data['density'] * data['통행속도']  # q_t = k_t * v_t
 
 # 상태 변수 S 생성 (임의로 정의, 실제 데이터에 따라 수정 필요)
-data['state'] = pd.cut(data['speed(u)'], bins=[-np.inf, 45, 70, np.inf], labels=[0, 1, 2])  # 예시로 세 가지 상태로 나눔
+data['state'] = pd.cut(data['speed(u)'], bins=[-np.inf, 40, 70, np.inf], labels=[0, 1, 2])  # 예시로 세 가지 상태로 나눔
 # print(data['state'])
 
 # # '통행속도' 정규화
@@ -50,13 +59,13 @@ train_sequences, test_sequences, train_targets, test_targets = train_test_split(
                                                                                 random_state=42)
 
 # TensorFlow Dataset 생성
-train_dataset = tf.data.Dataset.from_tensor_slices((train_sequences, train_targets)).batch(32)
-test_dataset = tf.data.Dataset.from_tensor_slices((test_sequences, test_targets)).batch(32)
+train_dataset = tf.data.Dataset.from_tensor_slices((train_sequences, train_targets)).batch(BATCH_SIZE)
+test_dataset = tf.data.Dataset.from_tensor_slices((test_sequences, test_targets)).batch(BATCH_SIZE)
 
 
 # 다상교통이론을 반영한 GRU 모델 정의
 class MultiPhaseGRUModel(tf.keras.Model):
-    def __init__(self, hidden_size, dropout_rate=0.2):
+    def __init__(self, hidden_size, dropout_rate=DROPOUT):
         super(MultiPhaseGRUModel, self).__init__()
         self.hidden_size = hidden_size
         self.gru = tf.keras.layers.GRU(hidden_size, return_sequences=True, return_state=True, dropout=dropout_rate,
@@ -84,12 +93,12 @@ class MultiPhaseGRUModel(tf.keras.Model):
 
 
 # 모델 초기화
-hidden_size = 128
+hidden_size = 64
 multiphase_gru_model = MultiPhaseGRUModel(hidden_size)
 
 # 손실 함수와 옵티마이저 정의
 loss_object = tf.keras.losses.MeanSquaredError()
-optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+optimizer = tf.keras.optimizers.Adam(learning_rate=LEARNING_RATE)
 
 
 # 학습 함수 정의
@@ -107,7 +116,7 @@ def train_step(sequences, targets):
 
 
 # 학습 루프
-EPOCHS = 100  # 학습 에폭
+EPOCHS = EPOCH  # 학습 에폭
 for epoch in range(EPOCHS):
     total_loss = 0
     for sequences, targets in train_dataset:
@@ -147,3 +156,53 @@ plt.xlabel('Sample')
 plt.ylabel('Speed')
 plt.legend()
 plt.show()
+
+
+
+file_path = f'/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/{mon}/6000VDS03500.csv'
+data = pd.read_csv(file_path)
+
+data = data.iloc[:int((len(data) * PRED_RATIO)) - 1, :]
+
+# 'date' 컬럼을 datetime 형식으로 변환
+data['date'] = pd.to_datetime(data['date'])
+data = data.set_index('date')
+data = data.sort_index()
+
+# 교통 밀도, 속도, 흐름 계산
+# data['density'] = data['통행속도']  # 예시로 속도를 밀도로 사용
+# data['flow'] = data['density'] * data['통행속도']  # q_t = k_t * v_t
+
+# 상태 변수 S 생성 (임의로 정의, 실제 데이터에 따라 수정 필요)
+data['state'] = pd.cut(data['speed(u)'], bins=[-np.inf, 45, 70, np.inf], labels=[0, 1, 2])
+
+sequences, targets = create_sequences(data.dropna())  # 결측값 제거
+
+predictions = []
+actuals = []
+
+preds = multiphase_gru_model(sequences, training=False)
+predictions = list(preds)
+actuals = list(targets)
+
+test_mse = mean_squared_error(actuals, predictions)
+test_rmse = np.sqrt(test_mse)
+test_mae = mean_absolute_error(actuals, predictions)
+test_r2 = r2_score(actuals, predictions)
+test_mape = mean_absolute_percentage_error(actuals, predictions)
+
+print(
+    f"Test MSE: {test_mse}, Test RMSE: {test_rmse}, Test MAE: {test_mae}, Test R2: {test_r2}, Test MAPE: {test_mape}")
+
+# 예측 시각화
+plt.figure(figsize=(12, 6))
+plt.plot(actuals, label='Actual', color='b')
+plt.plot(predictions, label='Predicted', color='r')
+plt.title('Actual vs Predicted (Newell GRU)')
+plt.xlabel('Sample')
+plt.ylabel('Speed')
+plt.legend()
+plt.show()
+
+# df = pd.DataFrame({'value': predictions})
+# df.to_csv('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/table-figure/table/deep-compare/다상.csv', index=False)

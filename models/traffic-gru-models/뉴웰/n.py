@@ -4,10 +4,10 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, mean_absolute_percentage_error
 
 # 데이터 로드 및 전처리
-file_path = '/Volumes/Expansion/traffic-prediction/product-data/con/6000VDS02200.csv'
+file_path = f'/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/1/6000VDS03500.csv'
 data = pd.read_csv(file_path)
 
 # 'date' 컬럼을 datetime 형식으로 변환
@@ -23,7 +23,7 @@ data = data.sort_index()
 data['delta_x'] = data['speed(u)'].diff()
 
 # 뉴웰의 관성 모델을 위한 반응 시간 설정
-K = 3  # 예시로 3타임 스텝 뒤에 반응한다고 가정
+K = 3  # 3 스텝 뒤에 반응한다고 가정
 
 # 입력 데이터 변화량을 K타임 스텝 뒤로 이동하여 반응 시간 고려
 data['delta_x_shifted'] = data['delta_x'].shift(K)
@@ -147,5 +147,57 @@ plt.plot(predictions, label='Predicted', color='r')
 plt.title('Actual vs Predicted (Newell GRU)')
 plt.xlabel('Sample')
 plt.ylabel('Normalized Speed')
+plt.legend()
+plt.show()
+
+
+
+
+file_path = '/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/1/6000VDE02302.csv'
+data = pd.read_csv(file_path)
+
+# 'date' 컬럼을 datetime 형식으로 변환
+data['date'] = pd.to_datetime(data['date'])
+data = data.set_index('date')
+data = data.sort_index()
+
+# 교통 밀도, 속도, 흐름 계산
+# data['density'] = data['통행속도']  # 예시로 속도를 밀도로 사용
+# data['flow'] = data['density'] * data['통행속도']  # q_t = k_t * v_t
+
+# 입력 데이터 변화량 계산
+data['delta_x'] = data['speed(u)'].diff()
+
+# 뉴웰의 관성 모델을 위한 반응 시간 설정
+K = 3  # 3 스텝 뒤에 반응한다고 가정
+
+# 입력 데이터 변화량을 K타임 스텝 뒤로 이동하여 반응 시간 고려
+data['delta_x_shifted'] = data['delta_x'].shift(K)
+
+sequences, targets = create_sequences(data.dropna())
+
+predictions = []
+actuals = []
+
+preds = newell_gru_model(sequences, training=False)
+predictions = list(preds)
+actuals = list(targets)
+
+test_mse = mean_squared_error(actuals, predictions)
+test_rmse = np.sqrt(test_mse)
+test_mae = mean_absolute_error(actuals, predictions)
+test_r2 = r2_score(actuals, predictions)
+test_mape = mean_absolute_percentage_error(actuals, predictions)
+
+print(
+    f"Test MSE: {test_mse}, Test RMSE: {test_rmse}, Test MAE: {test_mae}, Test R2: {test_r2}, Test MAPE: {test_mape}")
+
+# 예측 시각화
+plt.figure(figsize=(12, 6))
+plt.plot(actuals, label='Actual', color='b')
+plt.plot(predictions, label='Predicted', color='r')
+plt.title('Actual vs Predicted (Newell GRU)')
+plt.xlabel('Sample')
+plt.ylabel('Speed')
 plt.legend()
 plt.show()

@@ -4,10 +4,12 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, mean_absolute_percentage_error
+
+t = 10
 
 # 데이터 로드 및 전처리
-file_path = '/Volumes/Expansion/traffic-prediction/product-data/con/6000VDS02200.csv'
+file_path = f'/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/{t}/6000VDS03500.csv'
 data = pd.read_csv(file_path)
 
 # 'date' 컬럼을 datetime 형식으로 변환
@@ -102,7 +104,7 @@ def train_step_vanilla(sequences, targets):
 
 
 # 학습 루프
-EPOCHS = 100
+EPOCHS = 500
 for epoch in range(EPOCHS):
     total_loss = 0
     for sequences, targets in train_dataset:
@@ -124,12 +126,11 @@ def evaluate_model_vanilla(model, test_dataset):
     test_rmse = np.sqrt(test_mse)
     test_mae = mean_absolute_error(actuals, predictions)
     test_r2 = r2_score(actuals, predictions)
+    mape = mean_absolute_percentage_error(actuals, predictions)
 
-    print(f"Test MSE: {test_mse}, Test RMSE: {test_rmse}, Test MAE: {test_mae}, Test R2: {test_r2}")
+    print(f"Test MSE: {test_mse}, Test RMSE: {test_rmse}, Test MAE: {test_mae}, Test R2: {test_r2}, mape: {mape}")
 
     return predictions, actuals
-
-
 # 모델 평가 및 예측
 predictions_vanilla, actuals_vanilla = evaluate_model_vanilla(vanilla_gru_model, test_dataset)
 
@@ -142,3 +143,40 @@ plt.xlabel('Sample')
 plt.ylabel('Normalized Speed')
 plt.legend()
 plt.show()
+
+
+file_path = f'/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/test_data/{t}/6000VDS03500.csv'
+data = pd.read_csv(file_path)
+
+# 'date' 컬럼을 datetime 형식으로 변환
+data['date'] = pd.to_datetime(data['date'])
+data = data.set_index('date')
+data = data.sort_index()
+
+sequences, targets = create_sequences(data.dropna())  # 결측값 제거
+
+predictions = []
+actuals = []
+preds = vanilla_gru_model(sequences, training=False)
+predictions = list(preds)
+actuals = list(targets)
+
+test_mse = mean_squared_error(actuals, predictions)
+test_rmse = np.sqrt(test_mse)
+test_mae = mean_absolute_error(actuals, predictions)
+test_r2 = r2_score(actuals, predictions)
+mape = mean_absolute_percentage_error(actuals, predictions)
+
+print(f"Test MSE: {test_mse}, Test RMSE: {test_rmse}, Test MAE: {test_mae}, Test R2: {test_r2}, mape: {mape}")
+
+plt.figure(figsize=(12, 6))
+plt.plot(actuals, label='Actual', color='b')
+plt.plot(predictions, label='Predicted', color='r')
+plt.title('Actual vs Predicted (Vanilla GRU)')
+plt.xlabel('Sample')
+plt.ylabel('Normalized Speed')
+plt.legend()
+plt.show()
+
+# df = pd.DataFrame({'value': predictions, 'real': actuals})
+# df.to_csv('/Users/danawls/Desktop/*Important*/traffic-deep-learning-research/table-figure/table/deep-compare/gru.csv', index=False)
