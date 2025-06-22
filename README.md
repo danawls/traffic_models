@@ -88,8 +88,8 @@
 ├── get-result/     # figure 생성 코드
 ├── missing_data/       #결측치 처리 코드
 ├── models/     # 모델 개발 코드
-├── table-figure/       #표 및 사진
-└── GRU_traffic.pdf     #최종 논문
+├── table-figure/       # 표 및 사진
+└── GRU_traffic.pdf     # 최종 논문
 
 ```
 
