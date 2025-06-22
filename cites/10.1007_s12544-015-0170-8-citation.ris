@@ -1,0 +1,16 @@
+TY  - JOUR
+AU  - Kumar, S. Vasantha
+AU  - Vanajakshi, Lelitha
+PY  - 2015
+DA  - 2015/06/13
+TI  - Short-term traffic flow prediction using seasonal ARIMA model with limited input data
+JO  - European Transport Research Review
+SP  - 21
+VL  - 7
+IS  - 3
+AB  - Accurate prediction of traffic flow is an integral component in most of the Intelligent Transportation Systems (ITS) applications. The data driven approach using Box-Jenkins Autoregressive Integrated Moving Average (ARIMA) models reported in most studies demands sound database for model building. Hence, the applicability of these models remains a question in places where the data availability could be an issue. The present study tries to overcome the above issue by proposing a prediction scheme using Seasonal ARIMA (SARIMA) model for short term prediction of traffic flow using only limited input data.
+SN  - 1866-8887
+UR  - https://doi.org/10.1007/s12544-015-0170-8
+DO  - 10.1007/s12544-015-0170-8
+ID  - Kumar2015
+ER  - 

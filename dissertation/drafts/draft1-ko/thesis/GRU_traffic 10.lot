@@ -1,0 +1,11 @@
+\contentsline {table}{\numberline {2.1}{\ignorespaces Interstate I-55 Case Study 결과}}{21}{table.2.1}%
+\contentsline {table}{\numberline {2.2}{\ignorespaces Performance of 16 LSTM Models with Neighbor Flow as Inputs(2017)}}{23}{table.2.2}%
+\contentsline {table}{\numberline {2.3}{\ignorespaces Performance of 16 LSTM Models with Neighbor Flow as Inputs(2017)}}{24}{table.2.3}%
+\contentsline {table}{\numberline {2.4}{\ignorespaces MAE and MSE for Three Models(2016)}}{25}{table.2.4}%
+\contentsline {table}{\numberline {3.5}{\ignorespaces 교통류 직접 변수}}{36}{table.3.5}%
+\contentsline {table}{\numberline {3.6}{\ignorespaces 도로 환경 변수}}{38}{table.3.6}%
+\contentsline {table}{\numberline {3.7}{\ignorespaces 기상 환경 변수}}{39}{table.3.7}%
+\contentsline {table}{\numberline {3.8}{\ignorespaces 교통 수요 공공 변수}}{40}{table.3.8}%
+\contentsline {table}{\numberline {3.9}{\ignorespaces 차량 현황 변수}}{40}{table.3.9}%
+\contentsline {table}{\numberline {3.10}{\ignorespaces 전체 요구 유의 변수 단위}}{41}{table.3.10}%
+\contentsline {table}{\numberline {3.11}{\ignorespaces 전체 요구 유의 변수 단위}}{41}{table.3.11}%

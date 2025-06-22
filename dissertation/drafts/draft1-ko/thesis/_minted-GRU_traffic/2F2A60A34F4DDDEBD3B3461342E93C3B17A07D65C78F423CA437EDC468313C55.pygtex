@@ -1,0 +1,28 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{MultiPhaseGRUCell}\PYG{p}{(}\PYG{n}{tf}\PYG{o}{.}\PYG{n}{keras}\PYG{o}{.}\PYG{n}{layers}\PYG{o}{.}\PYG{n}{GRUCell}\PYG{p}{):}
+    \PYG{k}{def} \PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{units}\PYG{p}{,} \PYG{n}{state\PYGZus{}matrix\PYGZus{}size}\PYG{p}{,} \PYG{o}{**}\PYG{n}{kwargs}\PYG{p}{,} \PYG{n}{P\PYGZus{}m}\PYG{p}{,} \PYG{n}{H\PYGZus{}m}\PYG{p}{):}
+        \PYG{n+nb}{super}\PYG{p}{(}\PYG{n}{MultiPhaseGRUCell}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{p}{)}\PYG{o}{.}\PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n}{units}\PYG{p}{,} \PYG{o}{**}\PYG{n}{kwargs}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{state\PYGZus{}matrix\PYGZus{}size} \PYG{o}{=} \PYG{n}{state\PYGZus{}matrix\PYGZus{}size}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{P} \PYG{o}{=} \PYG{n}{P\PYGZus{}m} \PYG{c+c1}{\PYGZsh{} P\PYGZus{}m은 미리 설정된 상태 영향 행렬, 형태는 shape=(state\PYGZus{}matrix\PYGZus{}size,)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{H} \PYG{o}{=} \PYG{n}{H\PYGZus{}m} \PYG{c+c1}{\PYGZsh{} H\PYGZus{}m은 미리 설정된 상태 전이 영향 행렬,}
+		\PYG{c+c1}{\PYGZsh{} 형태는 shape=(state\PYGZus{}matrix\PYGZus{}size, state\PYGZus{}matrix\PYGZus{}size)}
+
+    \PYG{k}{def} \PYG{n+nf}{call}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{inputs}\PYG{p}{,} \PYG{n}{states}\PYG{p}{):}
+        \PYG{n}{prev\PYGZus{}hidden\PYGZus{}state} \PYG{o}{=} \PYG{n}{states}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}
+        \PYG{n}{S} \PYG{o}{=} \PYG{n}{tf}\PYG{o}{.}\PYG{n}{nn}\PYG{o}{.}\PYG{n}{softmax}\PYG{p}{(}\PYG{n}{inputs}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{}inputs은 외부 ANN모델의 출력, 소프트맥스는 거치지 않은 상태로 받는다.}
+        \PYG{n}{current\PYGZus{}state} \PYG{o}{=} \PYG{n}{tf}\PYG{o}{.}\PYG{n}{argmax}\PYG{p}{(}\PYG{n}{S}\PYG{p}{,} \PYG{n}{axis}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}
+        \PYG{n}{P\PYGZus{}current} \PYG{o}{=} \PYG{n}{tf}\PYG{o}{.}\PYG{n}{gather}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{P}\PYG{p}{,} \PYG{n}{current\PYGZus{}state}\PYG{p}{)}
+        \PYG{n}{prev\PYGZus{}state} \PYG{o}{=} \PYG{n}{tf}\PYG{o}{.}\PYG{n}{argmax}\PYG{p}{(}\PYG{n}{tf}\PYG{o}{.}\PYG{n}{nn}\PYG{o}{.}\PYG{n}{softmax}\PYG{p}{(}\PYG{n}{prev\PYGZus{}hidden\PYGZus{}state}\PYG{p}{),} \PYG{n}{axis}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}
+        \PYG{n}{H\PYGZus{}transition} \PYG{o}{=} \PYG{n}{tf}\PYG{o}{.}\PYG{n}{gather}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{H}\PYG{p}{[}\PYG{n}{prev\PYGZus{}state}\PYG{p}{],} \PYG{n}{current\PYGZus{}state}\PYG{p}{)}
+        \PYG{n}{output}\PYG{p}{,} \PYG{n}{new\PYGZus{}states} \PYG{o}{=} \PYG{n+nb}{super}\PYG{p}{(}\PYG{n}{MultiPhaseGRUCell}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{p}{)}\PYG{o}{.}\PYG{n}{call}\PYG{p}{(}\PYG{n}{inputs}\PYG{p}{,} \PYG{n}{states}\PYG{p}{)}
+        \PYG{n}{updated\PYGZus{}hidden\PYGZus{}state} \PYG{o}{=} \PYG{n}{output} \PYG{o}{+} \PYG{n}{P\PYGZus{}current} \PYG{o}{+} \PYG{n}{H\PYGZus{}transition}
+        \PYG{k}{return} \PYG{n}{updated\PYGZus{}hidden\PYGZus{}state}\PYG{p}{,} \PYG{p}{[}\PYG{n}{updated\PYGZus{}hidden\PYGZus{}state}\PYG{p}{]}
+
+\PYG{k}{def} \PYG{n+nf}{build\PYGZus{}multi\PYGZus{}phase\PYGZus{}gru\PYGZus{}model}\PYG{p}{(}\PYG{n}{input\PYGZus{}shape}\PYG{p}{,} \PYG{n}{units}\PYG{p}{,} \PYG{n}{state\PYGZus{}matrix\PYGZus{}size}\PYG{p}{):}
+    \PYG{n}{inputs} \PYG{o}{=} \PYG{n}{tf}\PYG{o}{.}\PYG{n}{keras}\PYG{o}{.}\PYG{n}{Input}\PYG{p}{(}\PYG{n}{shape}\PYG{o}{=}\PYG{n}{input\PYGZus{}shape}\PYG{p}{)}
+    \PYG{n}{gru\PYGZus{}layer} \PYG{o}{=} \PYG{n}{tf}\PYG{o}{.}\PYG{n}{keras}\PYG{o}{.}\PYG{n}{layers}\PYG{o}{.}\PYG{n}{RNN}\PYG{p}{(}\PYG{n}{MultiPhaseGRUCell}\PYG{p}{(}\PYG{n}{units}\PYG{p}{,} \PYG{n}{state\PYGZus{}matrix\PYGZus{}size}\PYG{p}{),} \PYG{n}{return\PYGZus{}sequences}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{)(}\PYG{n}{inputs}\PYG{p}{)}
+    \PYG{n}{outputs} \PYG{o}{=} \PYG{n}{tf}\PYG{o}{.}\PYG{n}{keras}\PYG{o}{.}\PYG{n}{layers}\PYG{o}{.}\PYG{n}{Dense}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{activation}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}linear\PYGZsq{}}\PYG{p}{)(}\PYG{n}{gru\PYGZus{}layer}\PYG{p}{)}
+    \PYG{n}{model} \PYG{o}{=} \PYG{n}{tf}\PYG{o}{.}\PYG{n}{keras}\PYG{o}{.}\PYG{n}{Model}\PYG{p}{(}\PYG{n}{inputs}\PYG{p}{,} \PYG{n}{outputs}\PYG{p}{)}
+    \PYG{n}{model}\PYG{o}{.}\PYG{n}{compile}\PYG{p}{(}\PYG{n}{optimizer}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}adam\PYGZsq{}}\PYG{p}{,} \PYG{n}{loss}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}mse\PYGZsq{}}\PYG{p}{)}
+    \PYG{k}{return} \PYG{n}{model}
+\end{Verbatim}

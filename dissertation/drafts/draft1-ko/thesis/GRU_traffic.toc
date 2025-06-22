@@ -1,0 +1,118 @@
+\contentsline {chapter}{초록}{i}{Doc-Start}%
+\contentsline {chapter}{목차}{iii}{Doc-Start}%
+\contentsline {chapter}{표 목차}{viii}{chapter*.1}%
+\contentsline {chapter}{그림 목차}{x}{chapter*.2}%
+\contentsline {chapter}{1장. 서론}{1}{chapter*.4}%
+\contentsline {section}{\numberline {1.1}연구의 배경 및 목적}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}연구의 범위 및 방법}{3}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}연구의 범위}{3}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}연구의 방법 및 내용}{5}{subsection.1.2.2}%
+\contentsline {chapter}{2장. 이론 및 선행연구 고찰}{7}{chapter*.7}%
+\contentsline {section}{\numberline {2.1}선행연구 고찰}{7}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}딥러닝 기반 선행연구}{7}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}시계열 예측 기반 선행연구}{14}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}수리적 모델 기반 선행연구}{16}{subsection.2.1.3}%
+\contentsline {subsection}{\numberline {2.1.4}국내 교통 예측 사례}{17}{subsection.2.1.4}%
+\contentsline {subsection}{\numberline {2.1.5}국외 교통 예측 사례}{18}{subsection.2.1.5}%
+\contentsline {subsection}{\numberline {2.1.6}기존 연구와의 차별성}{19}{subsection.2.1.6}%
+\contentsline {chapter}{3장. 모델 구축 방향}{21}{chapter*.13}%
+\contentsline {section}{\numberline {3.1}기반 모델 선정}{21}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}GRU}{21}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}충격파 이론(LWR)}{26}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.3}뉴웰의 관성 모델}{28}{subsection.3.1.3}%
+\contentsline {subsection}{\numberline {3.1.4}다상 교통 이론}{30}{subsection.3.1.4}%
+\contentsline {section}{\numberline {3.2}데이터 템플릿}{31}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}출력 변수}{32}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}요구 유의 변수 설정}{32}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}데이터의 Shape}{38}{subsection.3.2.3}%
+\contentsline {chapter}{4장. 충격파 이론 결합 모델 개발}{40}{chapter*.25}%
+\contentsline {section}{\numberline {4.1}충격파 이론의 특성 추출}{40}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}충격파 이론의 개념 사용}{41}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}충격파 속도의 사용}{43}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}예측 결과 해석에 사용할 충격파 이론}{44}{subsection.4.1.3}%
+\contentsline {section}{\numberline {4.2}충격파 이론 결합 모델의 모식적 설계 및 해석}{44}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}GRU에 대한 충격파 이론의 거시적 적용점}{44}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}충격파 속도의 산출}{46}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}충격파 Regularization}{51}{subsection.4.2.3}%
+\contentsline {section}{\numberline {4.3}충격파 이론 결합 모델의 수식적 설계}{52}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}GRU에 대한 충격파 이론의 거시적 적용점의 수식}{52}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}충격파 속도의 산출}{53}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}충격파 Regularization}{56}{subsection.4.3.3}%
+\contentsline {section}{\numberline {4.4}충격파 이론 결합 모델의 이론적 정립}{57}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}ANN기반 충격파 이론 결합 모델}{57}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}표준편차 기반 충격파 이론 결합 모델}{58}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}이동평균 기반 충격파 이론 결합 모델}{59}{subsection.4.4.3}%
+\contentsline {subsection}{\numberline {4.4.4}LWR기반 충격파 이론 결합 모델}{61}{subsection.4.4.4}%
+\contentsline {chapter}{5장. 뉴웰의 관성 모델 결합 모델 개발}{63}{chapter*.33}%
+\contentsline {section}{\numberline {5.1}뉴웰의 차량추종모델 특성 추출}{63}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}뉴웰의 관성 모델의 개념 사용}{64}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}비선형 속도 반응 함수 사용}{65}{subsection.5.1.2}%
+\contentsline {section}{\numberline {5.2}뉴웰의 관성 모델 결합 모델의 모식적 설계 및 해석}{65}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}뉴웰의 관성 모델 결합 모델의 적용점}{65}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}비선형 속도 반응 함수의 수정}{66}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}시간 지연의 적용}{68}{subsection.5.2.3}%
+\contentsline {section}{\numberline {5.3}뉴웰의 관성 모델 결합 모델의 수식적 설계}{68}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}비선형 속도 반응 함수}{68}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}시간 지연}{69}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}GRU 적용}{69}{subsection.5.3.3}%
+\contentsline {chapter}{6장. 다상 교통 이론 결합 모델 개발}{71}{chapter*.36}%
+\contentsline {section}{\numberline {6.1}다상 교통 이론의 특성 추출}{71}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}다상 교통 이론의 상태전이 효과 적용}{73}{subsection.6.1.1}%
+\contentsline {section}{\numberline {6.2}다상 교통 이론 결합 모델의 모식적 설계 및 해석}{74}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}상태 전이 확률 행렬(S)}{75}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}상태 영향 행렬(P)}{76}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}상태 전이 영향 행렬(H)}{76}{subsection.6.2.3}%
+\contentsline {subsection}{\numberline {6.2.4}전체 적용}{77}{subsection.6.2.4}%
+\contentsline {section}{\numberline {6.3}다상 교통 이론 결합 모델의 수식적 설계}{78}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}상태 전이 확률 행렬 \( S \)}{78}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2}상태 영향 행렬 \( P \)}{78}{subsection.6.3.2}%
+\contentsline {subsection}{\numberline {6.3.3}상태 전이 영향 행렬 \( H \)}{79}{subsection.6.3.3}%
+\contentsline {section}{\numberline {6.4}다상 교통 이론 결합 모델의 이론적 정립}{79}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}상태 전이 확률 계산}{79}{subsection.6.4.1}%
+\contentsline {subsection}{\numberline {6.4.2}상태 영향 행렬 계산}{80}{subsection.6.4.2}%
+\contentsline {subsection}{\numberline {6.4.3}현재 상태 결정}{80}{subsection.6.4.3}%
+\contentsline {subsection}{\numberline {6.4.4}이전 상태와 상태 전이 영향 계산}{81}{subsection.6.4.4}%
+\contentsline {subsection}{\numberline {6.4.5}현재 상태 영향 계산}{81}{subsection.6.4.5}%
+\contentsline {subsection}{\numberline {6.4.6}실질 GRU 연산}{81}{subsection.6.4.6}%
+\contentsline {subsection}{\numberline {6.4.7}상태 영향 및 상태 전이 영향 반영}{82}{subsection.6.4.7}%
+\contentsline {chapter}{7장. 데이터 구성}{84}{chapter*.42}%
+\contentsline {section}{\numberline {7.1}데이터 구성 과정}{84}{section.7.1}%
+\contentsline {section}{\numberline {7.2}데이터 수집}{85}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}교통 직접 변수}{85}{subsection.7.2.1}%
+\contentsline {subsection}{\numberline {7.2.2}도로환경변수}{87}{subsection.7.2.2}%
+\contentsline {subsection}{\numberline {7.2.3}기상환경변수}{89}{subsection.7.2.3}%
+\contentsline {subsection}{\numberline {7.2.4}교통수요공공변수}{90}{subsection.7.2.4}%
+\contentsline {subsection}{\numberline {7.2.5}차량현황변수}{93}{subsection.7.2.5}%
+\contentsline {subsection}{\numberline {7.2.6}원시 데이터 요약}{95}{subsection.7.2.6}%
+\contentsline {subsection}{\numberline {7.2.7}데이터 특이사항}{96}{subsection.7.2.7}%
+\contentsline {section}{\numberline {7.3}데이터 전처리}{97}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}데이터 전처리 개요}{98}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.3.2}유의 변수 설정}{99}{subsection.7.3.2}%
+\contentsline {section}{\numberline {7.4}결측치 보정}{101}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}결측치 탐색}{101}{subsection.7.4.1}%
+\contentsline {subsection}{\numberline {7.4.2}결측치 보정}{101}{subsection.7.4.2}%
+\contentsline {section}{\numberline {7.5}데이터 통합}{109}{section.7.5}%
+\contentsline {subsection}{\numberline {7.5.1}데이터 불러오기}{110}{subsection.7.5.1}%
+\contentsline {subsection}{\numberline {7.5.2}소통 데이터 돌발 데이터 통합}{110}{subsection.7.5.2}%
+\contentsline {subsection}{\numberline {7.5.3}노드링크 데이터 통합}{110}{subsection.7.5.3}%
+\contentsline {subsection}{\numberline {7.5.4}방재 데이터와 지점 데이터 결합}{110}{subsection.7.5.4}%
+\contentsline {subsection}{\numberline {7.5.5}기상 결합 데이터 통합}{111}{subsection.7.5.5}%
+\contentsline {subsection}{\numberline {7.5.6}혼잡빈도 데이터 통합}{111}{subsection.7.5.6}%
+\contentsline {subsection}{\numberline {7.5.7}그 외 데이터 결합}{111}{subsection.7.5.7}%
+\contentsline {subsection}{\numberline {7.5.8}최종 데이터 산출}{111}{subsection.7.5.8}%
+\contentsline {chapter}{8장. 실증 연구: 결합 모델 실험 및 평가}{112}{chapter*.66}%
+\contentsline {section}{\numberline {8.1}모델 개발}{112}{section.8.1}%
+\contentsline {section}{\numberline {8.2}실험 및 평가}{127}{section.8.2}%
+\contentsline {subsection}{\numberline {8.2.1}학습 설정}{127}{subsection.8.2.1}%
+\contentsline {subsection}{\numberline {8.2.2}딥러닝 기반 기법들과의 비교}{128}{subsection.8.2.2}%
+\contentsline {subsection}{\numberline {8.2.3}시계열 예측 기법들과의 비교}{136}{subsection.8.2.3}%
+\contentsline {subsection}{\numberline {8.2.4}그래프 분석적 기법과의 비교}{140}{subsection.8.2.4}%
+\contentsline {subsection}{\numberline {8.2.5}수리적 기법과의 비교}{144}{subsection.8.2.5}%
+\contentsline {subsection}{\numberline {8.2.6}결합 모델의 기억 지속성 검정}{147}{subsection.8.2.6}%
+\contentsline {chapter}{10장. 결론 및 향후 연구 과제}{152}{chapter*.87}%
+\contentsline {section}{\numberline {10.1}연구의 결론}{152}{section.10.1}%
+\contentsline {section}{\numberline {10.2}연구의 기대효과}{154}{section.10.2}%
+\contentsline {section}{\numberline {10.3}연구의 한계 및 향후 연구과제}{155}{section.10.3}%
+\contentsline {chapter}{참고문헌}{157}{section.10.3}%
+\contentsline {chapter}{부록}{161}{appendix*.89}%
+\contentsline {section}{\numberline {A}연구 Repository}{161}{section.Alph0.1}%

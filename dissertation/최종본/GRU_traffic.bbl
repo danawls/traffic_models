@@ -1,0 +1,140 @@
+\begin{thebibliography}{10}
+
+\bibitem{2023_road_status_report}
+국토교통부, ``도로현황조서,'' 2023.
+
+\bibitem{2023_road_traffic_survey}
+국토교통부, ``2023년 도로 교통량 조사,'' 2023.
+
+\bibitem{1994_2012_traffic_cost}
+한국교통연구원, ``전국 교통혼잡비용 산출과 추이 분석,''
+  1994--2012.
+
+\bibitem{2013_2021_traffic_cost}
+한국교통연구원, ``국가 교통정책 평가지표 조사사업,''
+  2016--2021.
+
+\bibitem{10.1115/1.3662552}
+R.~E. Kalman, ``{A New Approach to Linear Filtering and Prediction Problems},''
+  {\em Journal of Basic Engineering}, vol.~82, pp.~35--45, 03 1960.
+
+\bibitem{chain}
+�.~�. Марков, ``Распространение закона
+  больших чисел на величины, зависящие друг
+  от друга,'' {\em Известия
+  физико-математического общества при
+  Казанском университете}, vol.~15, no.~2, p.~135, 1906.
+
+\bibitem{lighthill1955kinematic}
+M.~J. Lighthill and G.~B. Whitham, ``On kinematic waves ii. a theory of traffic
+  flow on long crowded roads,'' {\em Proceedings of the royal society of
+  london. series a. mathematical and physical sciences}, vol.~229, no.~1178,
+  pp.~317--345, 1955.
+
+\bibitem{richards1956shock}
+P.~I. Richards, ``Shock waves on the highway,'' {\em Operations research},
+  vol.~4, no.~1, pp.~42--51, 1956.
+
+\bibitem{box2015time}
+G.~E. Box, G.~M. Jenkins, G.~C. Reinsel, and G.~M. Ljung, {\em Time series
+  analysis: forecasting and control}.
+\newblock John Wiley \& Sons, 2015.
+
+\bibitem{Combining-kohonen-maps-with-arima-time-series-models-to-forecast-traffic-flow}
+M.~{Van Der Voort}, M.~Dougherty, and S.~Watson, ``Combining kohonen maps with
+  arima time series models to forecast traffic flow,'' {\em Transportation
+  Research Part C: Emerging Technologies}, vol.~4, no.~5, pp.~307--318, 1996.
+
+\bibitem{5690910}
+N.~Lihua, C.~Xiaorong, and H.~Qian, ``Arima model for traffic flow prediction
+  based on wavelet analysis,'' in {\em The 2nd International Conference on
+  Information Science and Engineering}, pp.~1028--1031, 2010.
+
+\bibitem{kumarShorttermTrafficFlow2015}
+S.~V. Kumar and L.~Vanajakshi, ``Short-term traffic flow prediction using
+  seasonal {{ARIMA}} model with limited input data,'' {\em European Transport
+  Research Review}, vol.~7, p.~21, June 2015.
+
+\bibitem{Deep-learning-for-short-term-traffic-flow-prediction}
+N.~G. Polson and V.~O. Sokolov, ``Deep learning for short-term traffic flow
+  prediction,'' {\em Transportation Research Part C: Emerging Technologies},
+  vol.~79, pp.~1--17, 2017.
+
+\bibitem{A_Neural_Network_Based_Traffic_Flow_Prediction_Model}
+B.~G. Çetiner, M.~Sari, and O.~Borat, ``A neural network based traffic-flow
+  prediction model,'' {\em Mathematical and Computational Applications},
+  vol.~15, no.~2, pp.~269--278, 2010.
+
+\bibitem{Deep-Neural-Networks-for-traffic-flow-prediction}
+H.~Yi, H.~Jung, and S.~Bae, ``Deep neural networks for traffic flow
+  prediction,'' in {\em 2017 IEEE International Conference on Big Data and
+  Smart Computing (BigComp)}, pp.~328--331, 2017.
+
+\bibitem{A-traffic-flow-forecasting-model-based-on-BP-neural-network}
+G.~Xiaojian and Z.~Quan, ``A traffic flow forecasting model based on bp neural
+  network,'' in {\em 2009 2nd International Conference on Power Electronics and
+  Intelligent Transportation System (PEITS)}, vol.~3, pp.~311--314, 2009.
+
+\bibitem{Short-term-traffi-flow-prediction-with-LSTM-recurrent-neural-network}
+D.~Kang, Y.~Lv, and Y.-y. Chen, ``Short-term traffic flow prediction with lstm
+  recurrent neural network,'' in {\em 2017 IEEE 20th International Conference
+  on Intelligent Transportation Systems (ITSC)}, pp.~1--6, 2017.
+
+\bibitem{Predicting-Short-Term-Traffic-Flow-by-Long-Short-Term-Memory-Recurrent-Neural-Network}
+Y.~Tian and L.~Pan, ``Predicting short-term traffic flow by long short-term
+  memory recurrent neural network,'' in {\em 2015 IEEE International Conference
+  on Smart City/SocialCom/SustainCom (SmartCity)}, pp.~153--158, 2015.
+
+\bibitem{Using-LSTM-and-GRU-neural-network-methods-for-traffic-flow-prediction}
+R.~Fu, Z.~Zhang, and L.~Li, ``Using lstm and gru neural network methods for
+  traffic flow prediction,'' in {\em 2016 31st Youth Academic Annual Conference
+  of Chinese Association of Automation (YAC)}, pp.~324--328, 2016.
+
+\bibitem{Accurate-Multisteps-Traffic-Flow-Prediction-Based-on-SVM}
+Z.~Mingheng, Z.~Yaobao, H.~Ganglong, and C.~Gang, ``Accurate multisteps traffic
+  flow prediction based on svm,'' {\em Mathematical Problems in Engineering},
+  vol.~2013, no.~1, p.~418303, 2013.
+
+\bibitem{Short-Term-Traffic-Flow-Combined-Forecasting-Model-Based-on-SVM}
+Y.-n. Yang and H.-p. Lu, ``Short-term traffic flow combined forecasting model
+  based on svm,'' in {\em 2010 International Conference on Computational and
+  Information Sciences}, pp.~262--265, 2010.
+
+\bibitem{A-Short-Term-Traffic-Flow-Prediction-Method-Based-on-SVR}
+L.~Liu, ``A short-term traffic flow prediction method based on svr,'' in {\em
+  2021 2nd International Conference on Urban Engineering and Management Science
+  (ICUEMS)}, pp.~1--4, 2021.
+
+\bibitem{hopfield1982neural}
+J.~J. Hopfield, ``Neural networks and physical systems with emergent collective
+  computational abilities.,'' {\em Proceedings of the national academy of
+  sciences}, vol.~79, no.~8, pp.~2554--2558, 1982.
+
+\bibitem{cortes1995support}
+C.~Cortes, ``Support-vector networks,'' {\em Machine Learning}, 1995.
+
+\bibitem{vapnik2013nature}
+V.~Vapnik, {\em The nature of statistical learning theory}.
+\newblock Springer science \& business media, 2013.
+
+\bibitem{newell1961nonlinear}
+G.~F. Newell, ``Nonlinear effects in the dynamics of car following,'' {\em
+  Operations research}, vol.~9, no.~2, pp.~209--229, 1961.
+
+\bibitem{PhysRevLett.81.3797}
+B.~S. Kerner, ``Experimental features of self-organization in traffic flow,''
+  {\em Phys. Rev. Lett.}, vol.~81, pp.~3797--3800, Oct 1998.
+
+\bibitem{doi:10.3141/1678-20}
+B.~S. Kerner, ``Congested traffic flow: Observations and theory,'' {\em
+  Transportation Research Record}, vol.~1678, no.~1, pp.~160--167, 1999.
+
+\bibitem{cho2014learning}
+K.~Cho, ``Learning phrase representations using rnn encoder-decoder for
+  statistical machine translation,'' {\em arXiv preprint arXiv:1406.1078},
+  2014.
+
+\bibitem{node_info}
+국가교통정보센터, ``노드링크 소개,''
+
+\end{thebibliography}

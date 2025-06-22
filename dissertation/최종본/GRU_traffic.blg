@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2024)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: GRU_traffic.aux
+The style file: ieeetr.bst
+Database file #1: references.bib
+Warning--empty journal in node_info
+Warning--empty year in node_info
+You've used 30 entries,
+            1876 wiz_defined-function locations,
+            660 strings with 9473 characters,
+and the built_in function-call counts, 7696 in all, are:
+= -- 774
+> -- 206
+< -- 0
++ -- 84
+- -- 54
+* -- 479
+:= -- 1025
+add.period$ -- 31
+call.type$ -- 30
+change.case$ -- 28
+chr.to.int$ -- 0
+cite$ -- 32
+duplicate$ -- 434
+empty$ -- 805
+format.name$ -- 54
+if$ -- 1952
+int.to.chr$ -- 0
+int.to.str$ -- 30
+missing$ -- 28
+newline$ -- 95
+num.names$ -- 30
+pop$ -- 127
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 312
+stack$ -- 0
+substring$ -- 513
+swap$ -- 181
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 2
+while$ -- 75
+width$ -- 32
+write$ -- 282
+(There were 2 warnings)

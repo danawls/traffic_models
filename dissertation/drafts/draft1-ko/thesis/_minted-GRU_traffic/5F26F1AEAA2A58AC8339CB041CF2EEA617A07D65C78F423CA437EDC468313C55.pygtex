@@ -1,0 +1,33 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+	\PYG{k}{def} \PYG{n+nf}{build\PYGZus{}shockwave\PYGZus{}model}\PYG{p}{(}\PYG{n}{input\PYGZus{}shape}\PYG{p}{):}
+		\PYG{n}{model} \PYG{o}{=} \PYG{n}{tf}\PYG{o}{.}\PYG{n}{keras}\PYG{o}{.}\PYG{n}{Sequential}\PYG{p}{([}
+			\PYG{n}{tf}\PYG{o}{.}\PYG{n}{keras}\PYG{o}{.}\PYG{n}{layers}\PYG{o}{.}\PYG{n}{Input}\PYG{p}{(}\PYG{n}{shape}\PYG{o}{=}\PYG{n}{input\PYGZus{}shape}\PYG{p}{),}
+			\PYG{n}{tf}\PYG{o}{.}\PYG{n}{keras}\PYG{o}{.}\PYG{n}{layers}\PYG{o}{.}\PYG{n}{Dense}\PYG{p}{(}\PYG{l+m+mi}{64}\PYG{p}{,} \PYG{n}{activation}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}relu\PYGZsq{}}\PYG{p}{),}
+			\PYG{n}{tf}\PYG{o}{.}\PYG{n}{keras}\PYG{o}{.}\PYG{n}{layers}\PYG{o}{.}\PYG{n}{Dense}\PYG{p}{(}\PYG{l+m+mi}{32}\PYG{p}{,} \PYG{n}{activation}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}relu\PYGZsq{}}\PYG{p}{),}
+			\PYG{n}{tf}\PYG{o}{.}\PYG{n}{keras}\PYG{o}{.}\PYG{n}{layers}\PYG{o}{.}\PYG{n}{Dense}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{} 충격파 강도를 예측하는 출력}
+		\PYG{p}{])}
+		\PYG{k}{return} \PYG{n}{model}
+
+		\PYG{k}{class} \PYG{n+nc}{ShockwaveGRUModel}\PYG{p}{(}\PYG{n}{tf}\PYG{o}{.}\PYG{n}{keras}\PYG{o}{.}\PYG{n}{Model}\PYG{p}{):}
+    \PYG{k}{def} \PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{hidden\PYGZus{}size}\PYG{p}{):}
+        \PYG{n+nb}{super}\PYG{p}{(}\PYG{n}{ShockwaveGRUModel}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{p}{)}\PYG{o}{.}\PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hidden\PYGZus{}size} \PYG{o}{=} \PYG{n}{hidden\PYGZus{}size}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{gru} \PYG{o}{=} \PYG{n}{tf}\PYG{o}{.}\PYG{n}{keras}\PYG{o}{.}\PYG{n}{layers}\PYG{o}{.}\PYG{n}{GRU}\PYG{p}{(}\PYG{n}{hidden\PYGZus{}size}\PYG{p}{,} \PYG{n}{return\PYGZus{}sequences}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{,} \PYG{n}{return\PYGZus{}state}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{dense} \PYG{o}{=} \PYG{n}{tf}\PYG{o}{.}\PYG{n}{keras}\PYG{o}{.}\PYG{n}{layers}\PYG{o}{.}\PYG{n}{Dense}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{W\PYGZus{}shock} \PYG{o}{=} \PYG{n}{tf}\PYG{o}{.}\PYG{n}{Variable}\PYG{p}{(}\PYG{n}{tf}\PYG{o}{.}\PYG{n}{random}\PYG{o}{.}\PYG{n}{normal}\PYG{p}{([}\PYG{n}{hidden\PYGZus{}size}\PYG{p}{,} \PYG{n}{hidden\PYGZus{}size}\PYG{p}{]),} \PYG{n}{trainable}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{} 충격파 가중치 조정}
+
+    \PYG{k}{def} \PYG{n+nf}{call}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{inputs}\PYG{p}{,} \PYG{n}{shock\PYGZus{}intensity}\PYG{p}{):}
+        \PYG{n}{x} \PYG{o}{=} \PYG{n}{inputs}
+        \PYG{n}{gru\PYGZus{}out}\PYG{p}{,} \PYG{n}{state} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{gru}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}
+
+        \PYG{c+c1}{\PYGZsh{} 충격파 강도를 GRU에 반영}
+        \PYG{n}{shock\PYGZus{}intensity} \PYG{o}{=} \PYG{n}{tf}\PYG{o}{.}\PYG{n}{expand\PYGZus{}dims}\PYG{p}{(}\PYG{n}{shock\PYGZus{}intensity}\PYG{p}{,} \PYG{n}{axis}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{} [batch\PYGZus{}size, sequence\PYGZus{}length, 1]}
+        \PYG{n}{shock\PYGZus{}intensity} \PYG{o}{=} \PYG{n}{tf}\PYG{o}{.}\PYG{n}{tile}\PYG{p}{(}\PYG{n}{shock\PYGZus{}intensity}\PYG{p}{,}
+                                  \PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hidden\PYGZus{}size}\PYG{p}{])}  \PYG{c+c1}{\PYGZsh{} [batch\PYGZus{}size, sequence\PYGZus{}length, hidden\PYGZus{}size]}
+        \PYG{n}{shock\PYGZus{}effect} \PYG{o}{=} \PYG{n}{tf}\PYG{o}{.}\PYG{n}{matmul}\PYG{p}{(}\PYG{n}{shock\PYGZus{}intensity}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{W\PYGZus{}shock}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{} [batch\PYGZus{}size, sequence\PYGZus{}length, hidden\PYGZus{}size]}
+        \PYG{n}{state} \PYG{o}{=} \PYG{n}{state} \PYG{o}{+} \PYG{n}{tf}\PYG{o}{.}\PYG{n}{reduce\PYGZus{}mean}\PYG{p}{(}\PYG{n}{shock\PYGZus{}effect}\PYG{p}{,} \PYG{n}{axis}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{} [batch\PYGZus{}size, hidden\PYGZus{}size]}
+
+        \PYG{c+c1}{\PYGZsh{} 예측 값 계산}
+        \PYG{n}{output} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{dense}\PYG{p}{(}\PYG{n}{state}\PYG{p}{)}
+        \PYG{k}{return} \PYG{n}{output}
+\end{Verbatim}

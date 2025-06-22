@@ -1,0 +1,8 @@
+\contentsline {figure}{\numberline {1.1}{\ignorespaces 표준노드링크 데이터 시각화}}{4}{figure.1.1}%
+\contentsline {figure}{\numberline {1.2}{\ignorespaces 연구의 수행 절차}}{6}{figure.1.2}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces 퍼셉트론(Perceptron)}}{8}{figure.2.3}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces 다층 퍼셉트론(Multilayer Perceptron)}}{9}{figure.2.4}%
+\contentsline {figure}{\numberline {2.5}{\ignorespaces ReLU(Rectified Linear Unit)}}{10}{figure.2.5}%
+\contentsline {figure}{\numberline {2.6}{\ignorespaces 경사 하강법(Gradient Descent)}}{12}{figure.2.6}%
+\contentsline {figure}{\numberline {2.7}{\ignorespaces 드롭아웃(Dropout)}}{17}{figure.2.7}%
+\contentsline {figure}{\numberline {2.8}{\ignorespaces Prediction error results of the SVM model with different input vectors}}{26}{figure.2.8}%

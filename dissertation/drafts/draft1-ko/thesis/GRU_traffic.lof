@@ -1,0 +1,40 @@
+\contentsline {figure}{\numberline {1.1}{\ignorespaces 표준노드링크 데이터 시각화}}{4}{figure.caption.5}%
+\contentsline {figure}{\numberline {1.2}{\ignorespaces 연구의 수행 절차}}{6}{figure.caption.6}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Prediction error results of the SVM model with different input vectors}}{13}{figure.caption.12}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces GRU Model Loss}}{25}{figure.caption.15}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces LSTM Model Loss}}{25}{figure.caption.16}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces RNN Model Loss}}{26}{figure.caption.17}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces 충격파 이론 결합 모델 설계 방법론}}{41}{figure.caption.26}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces 충격파 이론과 GRU 모델의 공통점}}{42}{figure.caption.27}%
+\contentsline {figure}{\numberline {4.9}{\ignorespaces 모델 설계 대상}}{43}{figure.caption.28}%
+\contentsline {figure}{\numberline {4.10}{\ignorespaces 적용점 모식도}}{45}{figure.caption.29}%
+\contentsline {figure}{\numberline {4.11}{\ignorespaces 표준편차의 임계값을 사용하는 충격파 속도 산출법 모식도}}{48}{figure.caption.30}%
+\contentsline {figure}{\numberline {4.12}{\ignorespaces 이동평균의 임계값을 사용하는 충격파 속도 산출법 모식도}}{50}{figure.caption.31}%
+\contentsline {figure}{\numberline {4.13}{\ignorespaces ANN 회귀모델을 사용하는 충격파 속도 산출법 모식도}}{51}{figure.caption.32}%
+\contentsline {figure}{\numberline {5.14}{\ignorespaces 뉴웰의 차량추종모델 설계 계획}}{64}{figure.caption.34}%
+\contentsline {figure}{\numberline {5.15}{\ignorespaces 뉴웰의 차량추종모델 적용 방법}}{67}{figure.caption.35}%
+\contentsline {figure}{\numberline {6.16}{\ignorespaces 다상 교통 이론 설계 방법}}{72}{figure.caption.37}%
+\contentsline {figure}{\numberline {6.17}{\ignorespaces 다상 교통 이론 세가지 변수 추출 방법}}{74}{figure.caption.38}%
+\contentsline {figure}{\numberline {6.18}{\ignorespaces 상태 전이 확률 행렬 도식}}{75}{figure.caption.39}%
+\contentsline {figure}{\numberline {6.19}{\ignorespaces 상태 영향 행렬 도식}}{76}{figure.caption.40}%
+\contentsline {figure}{\numberline {6.20}{\ignorespaces 상태 전이 영향 행렬 도식}}{77}{figure.caption.41}%
+\contentsline {figure}{\numberline {7.21}{\ignorespaces 돌발 데이터 Missingno heatmap graph}}{102}{figure.caption.58}%
+\contentsline {figure}{\numberline {7.22}{\ignorespaces 돌발 데이터 Missingno matrix graph}}{103}{figure.caption.59}%
+\contentsline {figure}{\numberline {7.23}{\ignorespaces 방재(AWS)데이터 Missingno matrix graph}}{104}{figure.caption.60}%
+\contentsline {figure}{\numberline {7.24}{\ignorespaces 방재(AWS)데이터 Missingno heatmap graph}}{105}{figure.caption.61}%
+\contentsline {figure}{\numberline {7.25}{\ignorespaces 도로(현황)데이터 Missingno matrix graph}}{106}{figure.caption.62}%
+\contentsline {figure}{\numberline {7.26}{\ignorespaces 도로(현황)데이터 Missingno heatmap graph}}{107}{figure.caption.63}%
+\contentsline {figure}{\numberline {7.27}{\ignorespaces 노드 데이터 Missingno matrix graph}}{108}{figure.caption.64}%
+\contentsline {figure}{\numberline {7.28}{\ignorespaces 링크 데이터 Missingno matrix graph}}{109}{figure.caption.65}%
+\contentsline {figure}{\numberline {8.29}{\ignorespaces 데이터 분할}}{115}{figure.caption.67}%
+\contentsline {figure}{\numberline {8.30}{\ignorespaces 결합 모델 시각화}}{132}{figure.caption.71}%
+\contentsline {figure}{\numberline {8.31}{\ignorespaces 딥러닝 기반 기법 시각화 1}}{134}{figure.caption.72}%
+\contentsline {figure}{\numberline {8.32}{\ignorespaces 딥러닝 기반 기법 시각화 2}}{135}{figure.caption.73}%
+\contentsline {figure}{\numberline {8.33}{\ignorespaces 딥러닝 기반 기법 성능지표 비교}}{136}{figure.caption.74}%
+\contentsline {figure}{\numberline {8.34}{\ignorespaces 시계열 예측 기법 시각화}}{139}{figure.caption.76}%
+\contentsline {figure}{\numberline {8.35}{\ignorespaces 시계열 예측 기법 성능지표 비교}}{140}{figure.caption.77}%
+\contentsline {figure}{\numberline {8.36}{\ignorespaces 그래프 분석적 기법 시각화}}{143}{figure.caption.79}%
+\contentsline {figure}{\numberline {8.37}{\ignorespaces 그래프 분석적 기법 성능지표 비교}}{144}{figure.caption.80}%
+\contentsline {figure}{\numberline {8.38}{\ignorespaces 수리적 기법 시각화}}{146}{figure.caption.82}%
+\contentsline {figure}{\numberline {8.39}{\ignorespaces 수리적 기법 성능지표 비교}}{147}{figure.caption.83}%
+\contentsline {figure}{\numberline {8.40}{\ignorespaces 인풋 길이별 결합모델 성능지표 비교}}{150}{figure.caption.86}%

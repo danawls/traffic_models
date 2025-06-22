@@ -1,0 +1,35 @@
+\contentsline {table}{\numberline {2.1}{\ignorespaces Interstate I-55 Case Study 결과}}{8}{table.caption.8}%
+\contentsline {table}{\numberline {2.2}{\ignorespaces Performance of 16 LSTM Models with Neighbor Flow as Inputs(2017)}}{10}{table.caption.9}%
+\contentsline {table}{\numberline {2.3}{\ignorespaces Performance of 16 LSTM Models with Neighbor Flow as Inputs(2017)}}{11}{table.caption.10}%
+\contentsline {table}{\numberline {2.4}{\ignorespaces MAE and MSE for Three Models(2016)}}{12}{table.caption.11}%
+\contentsline {table}{\numberline {3.5}{\ignorespaces 세가지 순환신경망 모델 비교}}{24}{table.caption.14}%
+\contentsline {table}{\numberline {3.6}{\ignorespaces 교통류 직접 변수}}{33}{table.caption.18}%
+\contentsline {table}{\numberline {3.7}{\ignorespaces 도로 환경 변수}}{36}{table.caption.19}%
+\contentsline {table}{\numberline {3.8}{\ignorespaces 기상 환경 변수}}{37}{table.caption.20}%
+\contentsline {table}{\numberline {3.9}{\ignorespaces 교통 수요 공공 변수}}{37}{table.caption.21}%
+\contentsline {table}{\numberline {3.10}{\ignorespaces 차량 현황 변수}}{38}{table.caption.22}%
+\contentsline {table}{\numberline {3.11}{\ignorespaces 전체 요구 유의 변수 단위}}{39}{table.caption.23}%
+\contentsline {table}{\numberline {3.12}{\ignorespaces 전체 요구 유의 변수 Shape}}{39}{table.caption.24}%
+\contentsline {table}{\numberline {7.13}{\ignorespaces 교통소통정보}}{86}{table.caption.43}%
+\contentsline {table}{\numberline {7.14}{\ignorespaces 교통돌발정보}}{86}{table.caption.44}%
+\contentsline {table}{\numberline {7.15}{\ignorespaces 혼잡빈도}}{87}{table.caption.45}%
+\contentsline {table}{\numberline {7.16}{\ignorespaces 노드 데이터}}{88}{table.caption.46}%
+\contentsline {table}{\numberline {7.17}{\ignorespaces 링크 데이터}}{88}{table.caption.47}%
+\contentsline {table}{\numberline {7.18}{\ignorespaces 도로(현황) 데이터}}{89}{table.caption.48}%
+\contentsline {table}{\numberline {7.19}{\ignorespaces 방재 데이터}}{90}{table.caption.49}%
+\contentsline {table}{\numberline {7.20}{\ignorespaces 인구 데이터}}{91}{table.caption.50}%
+\contentsline {table}{\numberline {7.21}{\ignorespaces 사고다발지점 데이터}}{92}{table.caption.51}%
+\contentsline {table}{\numberline {7.22}{\ignorespaces 전국무인교통단속카메라표준데이터}}{93}{table.caption.52}%
+\contentsline {table}{\numberline {7.23}{\ignorespaces 국토교통부 자동차 등록 현황 데이터}}{94}{table.caption.53}%
+\contentsline {table}{\numberline {7.24}{\ignorespaces 경찰청 운전면허소지자 연령별 현황 데이터}}{95}{table.caption.54}%
+\contentsline {table}{\numberline {7.25}{\ignorespaces 원시데이터 요약}}{96}{table.caption.55}%
+\contentsline {table}{\numberline {7.26}{\ignorespaces 데이터 특이사항}}{97}{table.caption.56}%
+\contentsline {table}{\numberline {7.27}{\ignorespaces 유의변수 목록}}{100}{table.caption.57}%
+\contentsline {table}{\numberline {8.28}{\ignorespaces 별개 ANN의 은닉층 설정}}{117}{table.caption.68}%
+\contentsline {table}{\numberline {8.29}{\ignorespaces 결합 모델 공통 설정}}{127}{table.caption.69}%
+\contentsline {table}{\numberline {8.30}{\ignorespaces 딥러닝 기반 기법들과의 성능 지표 비교}}{130}{table.caption.70}%
+\contentsline {table}{\numberline {8.31}{\ignorespaces 시계열 예측 기법들과의 성능 지표 비교}}{138}{table.caption.75}%
+\contentsline {table}{\numberline {8.32}{\ignorespaces 그래프 분석적 기법들과의 성능 지표 비교}}{141}{table.caption.78}%
+\contentsline {table}{\numberline {8.33}{\ignorespaces 수리적 기법들과의 성능 지표 비교}}{145}{table.caption.81}%
+\contentsline {table}{\numberline {8.34}{\ignorespaces 기간별 결합모델 성능 지표 비교1}}{148}{table.caption.84}%
+\contentsline {table}{\numberline {8.35}{\ignorespaces 기간별 결합모델 성능 지표 비교 2}}{149}{table.caption.85}%
