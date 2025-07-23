@@ -1,4 +1,4 @@
-[Go To Engligh Ver](#-english-ver)
+[Go To Engligh Ver](#english-ver)
 
 # 🚦 GRU 모델과 교통류 이론을 결합한 교통 예측 연구
 
